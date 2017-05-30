@@ -1,0 +1,99 @@
+1. Install EC2 instance for Node - AWS - Ubuntu - make sure chef-node.pem stored in local machine 
+2. Install EC2 instance for Workstation - AWS - Ubuntu make sure chef-ws.pem stored in local machine 
+
+3. Register/login to Hosted Chef Server - https://manage.chef.io/login
+
+4. we can connect these system by using ssh commands
+	git>ssh -i "chef-node.pem" ubuntu@ec2-52-14-45-105.us-east-2.compute.amazonaws.com
+	ubuntu@ip-address-node~> sudo -i
+	root@ip-address-node#> apt-get install 
+	
+	git>ssh -i "chef-ws.pem" ubuntu@ec2-52-15-158-151.us-east-2.compute.amazonaws.com
+	ubuntu@ip-address-ws~> sudo -i
+	root@ip-address-ws#> apt-get install 
+	
+5. Get StarterKit.zip from Hosted Chef Server organization tab
+
+6. Copy StarterKit.zip from local machine to Workstation using scp command
+	git> scp -i "chef-ws.pem" -r /d/DevOpsWS/chef-starter/chef-repo/ ubuntu@ec2-52-15-158-151.us-east-2.compute.amazonaws.com:/home/ubuntu/
+	git> ssh -i "chef-ws.pem" ubuntu@ec2-52-15-158-151.us-east-2.compute.amazonaws.com
+	
+	ubuntu@ip-address~ws> sudo -i
+	root@ip-address-ws> cd /home/ubuntu/ ls -l verify above files
+	root@ip-address-ws:/home/ubuntu/#> ls -l
+	
+7. Copy chef-node.pem from local machine to Workstation for Node Bootstrapping using scp command
+	== open this as adminstrater because we could not copy .pem files without adminstration access.==
+	git>scp -i "chef-ws.pem" -r /C/Users/AnithaAmaresh/Downloads/chef-node.pem ubuntu@ec2-52-15-158-151.us-east-2.compute.amazonaws.com:/home/ubuntu/
+	=> do above step in workstation
+	
+8. Install ChefDK/Knife on Workstation
+	root@ip-address-ws> curl -L https://www.opscode.com/chef/install.sh | bash
+	#>knife --version
+	==>Chef 13.0.118
+	
+9. perform bootstrap using knife bootstrap command
+	root@ip-address-ws#>knife bootstrap ipaddress<public ip of node-server>
+					--ssh-user ubuntu
+					--sudo
+					--identity-file /ubuntu/home/chef-node.pem
+					-N <public DNS name for Node-server which will be showned in Hosted Chef server>
+					
+	root@ip-address-ws#/home/ubuntu/chef-repo>knife bootstrap 52.14.45.105 --ssh-user ubuntu --sudo --identity-file /home/ubuntu/chef-node.pem -N ec2-52-14-45-105.us-east-2.compute.amazonaws.com
+	
+10. Goto /chef-repo/cookbooks/ and create cookbook 
+11. To create cookbook - chef generate cookbook first_cookbook
+12. To create recipe - chef generate recipe . first_recipe
+
+13. write recipe and upload the cookbook
+	root@ip-adrees-ws chef-repo/cookbooks/>knife cookbook upload first_cookbook
+	==>cookbook uploaded successfully
+	
+14. Add recipe to run_list for specific Node or which we need to apply to node.
+	root@ip-adrees chef-repo/cookbooks/first_cookbook/recipes>knife node run_list add <public DNS name of Node server> "recipe[first_cookbook::default]"
+	root@ip-adrees chef-repo/cookbooks/first_cookbook/recipes>knife node run_list add ec2-52-14-45-105.us-east-2.compute.amazonaws.com "recipe[first_cookbook::default]"
+
+15. goto Node-server and run "chef-client" for latest covergence
+	root@ip-address-node /home>chef-client
+	changes are available now-->verify it covergences are applied
+============================================================
+For Windows Workstation
+1. Install ChefDk
+2. Install Visual Studio Code for development
+3. Vagrant Installaion for local machine verification instead for virtual machines == >
+4. vagrant init ubuntu/trusty64 ==> this will generate the "vagrantfile" virtual machine details
+4. Create cookbook using command line - /chef-repo/cookbooks>chef generate cookbook tomcat_vagrant_cookbook 
+5. run berk command on following path	/././tomcat_vagrant_cookbook>berk install 
+	==> berk and dependencies are installed successfully
+6. kitchen converge
+7. kitchen login
+8. verify the applied "recipes"
+9. support commands -
+	
+
+vagrant init ubuntu/trusty64
+vagrant up
+vagrant ssh
+vagrant stop
+vagrant destory
+vagrant shutdown
+
+berks install
+
+kitchen list
+
+kitchen converge
+
+kitchen test
+kitchen init
+kitchen create
+kitchen login
+kitchen destory
+
+
+# chef gem install kitchen
+# chef gem install kitchen-vagrant
+# chef gem unstall kitchen -v <version>
+# chef gem list kitchen-vagrant	
+
+
