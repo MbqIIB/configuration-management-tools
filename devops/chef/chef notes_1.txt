@@ -63,7 +63,7 @@ For Windows Workstation
 3. Vagrant Installaion for local machine verification instead for virtual machines == >
 4. vagrant init ubuntu/trusty64 ==> this will generate the "vagrantfile" virtual machine details
 4. Create cookbook using command line - /chef-repo/cookbooks>chef generate cookbook tomcat_vagrant_cookbook 
-5. run berk command on following path	/././tomcat_vagrant_cookbook>berk install 
+5. run berk command on following path	/././tomcat_vagrant_cookbook>berks install 
 	==> berk and dependencies are installed successfully
 6. kitchen converge
 7. kitchen login
