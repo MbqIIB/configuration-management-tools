@@ -7,6 +7,8 @@ TODO: Enter the cookbook description here.
 - chef generate recipe . tomcat
 - chef generate attribute . tomcat // this will override the existing attributes/default.rb
 
+- vagrant global-status 
+
 - kitchen converge
 - kitchen login
 
@@ -14,7 +16,7 @@ TODO: Enter the cookbook description here.
 - root>service tomcat7 status
 =>unreconized service command
 
-
+---------------------------------------------
 then uncomment the run_list for tomcat installation
 
 - kitchen converge
@@ -22,5 +24,5 @@ then uncomment the run_list for tomcat installation
 
 - sudo -i 
 - root>service tomcat7 status
-=>tomcat running 
+=>Tomcat servlet engine is running with pid 5848
 
