@@ -1,0 +1,1 @@
+default['configure_tomcat_attributes']['package_name'] = 'tomcat7'
