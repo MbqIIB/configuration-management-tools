@@ -1,12 +1,12 @@
 #
-# Cookbook:: tomcat_on_linux_flavors
+# Cookbook:: tomcat_on_linuxflavors
 # Spec:: default
 #
 # Copyright:: 2017, The Authors, All Rights Reserved.
 
 require 'spec_helper'
 
-describe 'tomcat_on_linux_flavors::default' do
+describe 'tomcat_on_linuxflavors::default' do
   context 'When all attributes are default, on an Ubuntu 16.04' do
     let(:chef_run) do
       # for a complete list of available platforms and versions see:

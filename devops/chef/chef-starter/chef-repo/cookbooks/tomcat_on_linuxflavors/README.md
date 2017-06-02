@@ -1,4 +1,4 @@
-# tomcat_on_linux_flavors
+# tomcat_on_linuxflavors
 
 TODO: Enter the cookbook description here.
 

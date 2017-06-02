@@ -7,7 +7,8 @@ TODO: Enter the cookbook description here.
 - chef generate recipe . tomcat
 - chef generate attribute . tomcat // this will override the existing attributes/default.rb
 
-- vagrant global-status 
+- vagrant global-status
+- vagrant destroy 1ab23c4d 
 
 - kitchen converge
 - kitchen login
