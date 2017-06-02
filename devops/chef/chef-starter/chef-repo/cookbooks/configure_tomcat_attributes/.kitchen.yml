@@ -23,6 +23,7 @@ suites:
   - name: default
     run_list:
       - recipe[configure_tomcat_attributes::default]
+      - recipe[configure_tomcat_attributes::tomcat]
     verifier:
       inspec_tests:
         - test/smoke/default

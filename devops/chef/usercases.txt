@@ -12,8 +12,8 @@
 	d. Apply above changes to 'ubuntu', 'centos7' and 'redhat' machines.
 2. create local workinstation windows , install chefDk and apply cookbooks to EC2 machines ==>configure_tree_windows_ec2, configure_tomcat_windows_ec2
 3. create local workstation as windows and create vagrant virtual machines
-	a. install tomcat on ubuntu and access tomcat home page ==>configure_tomcat_ubuntu_vagrant
-	b. install tomcat on redhat/centos7 and access tomcat home page ==>configure_tomcat_redhat_vagrant
+	a. install tomcat on ubuntu and access tomcat home page ==>configure_tomcat_ubuntu
+	b. install tomcat on redhat/centos7 and access tomcat home page ==>configure_tomcat_redhat
 	c. merge above ('ubuntu', 'centos7' and 'redhat' changes) to configure_tomcat_linux_flavors ==> configure_tomcat_linux_flavors, 
 		- use recipes, attributes, files, templates, remote_files are like jars, wars and ears from nexus repository 
 		i.  add mulitiple recipes to run_list in .kitchen.yml and knife runlist command
@@ -30,4 +30,34 @@
 10.configure_haproxy
 
 11. environments, roles, data_bags and supermarket
+
+
+
+# configure_tomcat_ubuntu
+
+TODO: Enter the cookbook description here.
+
+vagrant global-status
+vagrant destory <id>
+    
+vagrant init ubuntu/trusty64
+vagrant up
+
+chef generate cookbook configure_tomcat_ubuntu
+chef generate recipe . tomcat
+
+berks install
+
+kitchen converge
+kitchen login
+vagrant@default-ubuntu-14.04:~$ sudo -i
+root@default-ubuntu-14.04:~$ service tomcat7 status
+
+http://localhost:8080
+
+kitchen destroy (don't do 'vagrant destroy' this will corrupt the entire cookbooks )
+
+
+
+
 
