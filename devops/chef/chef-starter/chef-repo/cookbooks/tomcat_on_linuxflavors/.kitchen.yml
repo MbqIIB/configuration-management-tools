@@ -13,8 +13,16 @@ verifier:
   name: inspec
 
 platforms:
-  - name: ubuntu-16.04
-  - name: centos-7.3
+  - name: ubuntu-14.04
+    driver:
+      box: ubuntu/trusty64
+      network:
+      - ["private_network", {ip: "192.168.33.34"}]
+  - name: centos-7
+    driver:
+      box: centos/7
+      network:
+      - ["private_network", {ip: "192.168.33.33"}]
 
 suites:
   - name: default
