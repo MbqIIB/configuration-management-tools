@@ -10,5 +10,5 @@ package package_name do
 end
 
 service package_name do
-  action :start
+  action [:enable, :start]
 end

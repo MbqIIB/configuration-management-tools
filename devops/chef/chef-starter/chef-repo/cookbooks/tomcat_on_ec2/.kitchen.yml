@@ -18,16 +18,11 @@ platforms:
       box: ubuntu/trusty64
       network:
       - ["private_network", {ip: "192.168.33.34"}]
-  - name: centos-7
-    driver:
-      box: centos/7
-      network:
-      - ["private_network", {ip: "192.168.33.35"}]
 
 suites:
   - name: default
     run_list:
-      - recipe[tomcat_on_linuxflavors::default]
+      - recipe[tomcat_on_ec2::default]
     verifier:
       inspec_tests:
         - test/smoke/default

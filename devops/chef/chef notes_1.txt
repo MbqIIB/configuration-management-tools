@@ -69,7 +69,8 @@ For Windows Workstation
 7. kitchen login
 8. verify the applied "recipes"
 9. support commands -
-	
+
+knife bootstrap 13.58.141.138 --ssh-user ubuntu --sudo --identity-file C:/Users/AnithaAmaresh/Downloads/chef-node.pem -N ec2-13-58-141-138.us-east-2.compute.amazonaws.com
 
 vagrant init ubuntu/trusty64
 vagrant up
