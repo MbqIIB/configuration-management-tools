@@ -19,7 +19,9 @@ package_name = node['tomcat_on_ec2']['package_name']
 package package_name do
   action :install
 end
+log 'installed tomcat'
 
 service package_name do
   action :start
 end
+log 'tomcat started...'
