@@ -105,9 +105,15 @@ For Windows Workstation
 4. knife bootstrap 13.58.141.138 --ssh-user ubuntu --sudo --identity-file C:/Users/AnithaAmaresh/Downloads/chef-node.pem -N ec2-13-58-141-138.us-east-2.compute.amazonaws.com
 5. run berk command on following path	tomcat_on_ec2>berks upload /berks install
 	==> berk and dependencies are installed / uploaded successfully
-6. http://ec2-13-58-141-138.us-east-2.compute.amazonaws.com:8080/
+6. open chef-node with ssh and run the follosing on chef-client
+	=>new converges will be applied.
+7. and verify the following urls
+8. http://ec2-13-58-141-138.us-east-2.compute.amazonaws.com:8080/
    http://ec2-13-58-141-138.us-east-2.compute.amazonaws.com:8080/docs/
    http://ec2-13-58-141-138.us-east-2.compute.amazonaws.com:8080/examples/
    http://ec2-13-58-141-138.us-east-2.compute.amazonaws.com:8080/manager/html
+   
+9. if above urls not open with any reason, there might be problem with aws, that is in aws security group, make sure that http port 8080 opened for public.
+	this change we have to do manually , because 8080 http is not pre-configured.
 
 
