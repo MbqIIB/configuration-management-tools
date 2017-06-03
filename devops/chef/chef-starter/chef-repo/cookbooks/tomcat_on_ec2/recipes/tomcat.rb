@@ -14,10 +14,12 @@ case node['platform']
     end
 end
 
-package 'tomcat7' do
+package_name = ['tomcat_on_ec2']['package_name']
+
+package package_name do
   action :install
 end
 
-service 'tomcat7' do
+service package_name do
   action :start
 end
