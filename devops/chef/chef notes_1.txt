@@ -71,7 +71,7 @@ For Windows Workstation
 9. support commands -
 
 knife bootstrap 13.58.141.138 --ssh-user ubuntu --sudo --identity-file C:/Users/AnithaAmaresh/Downloads/chef-node.pem -N ec2-13-58-141-138.us-east-2.compute.amazonaws.com
-
+http://ec2-13-58-141-138.us-east-2.compute.amazonaws.com:8080/
 vagrant init ubuntu/trusty64
 vagrant up
 vagrant ssh
@@ -96,5 +96,18 @@ kitchen destory
 # chef gem install kitchen-vagrant
 # chef gem unstall kitchen -v <version>
 # chef gem list kitchen-vagrant	
+
+=========================================
+For Windows Workstation
+1. Install ChefDk
+2. Install Visual Studio Code for development
+3. Create cookbook using command line - /chef-repo/cookbooks>chef generate cookbook tomcat_on_ec2
+4. knife bootstrap 13.58.141.138 --ssh-user ubuntu --sudo --identity-file C:/Users/AnithaAmaresh/Downloads/chef-node.pem -N ec2-13-58-141-138.us-east-2.compute.amazonaws.com
+5. run berk command on following path	tomcat_on_ec2>berks upload /berks install
+	==> berk and dependencies are installed / uploaded successfully
+6. http://ec2-13-58-141-138.us-east-2.compute.amazonaws.com:8080/
+   http://ec2-13-58-141-138.us-east-2.compute.amazonaws.com:8080/docs/
+   http://ec2-13-58-141-138.us-east-2.compute.amazonaws.com:8080/examples/
+   http://ec2-13-58-141-138.us-east-2.compute.amazonaws.com:8080/manager/html
 
 

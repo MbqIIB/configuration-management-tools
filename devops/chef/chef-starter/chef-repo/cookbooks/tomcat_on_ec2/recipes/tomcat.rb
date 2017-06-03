@@ -14,7 +14,7 @@ case node['platform']
     end
 end
 
-package_name = ['tomcat_on_ec2']['package_name']
+package_name = node['tomcat_on_ec2']['package_name']
 
 package package_name do
   action :install
