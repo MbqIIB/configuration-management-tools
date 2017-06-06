@@ -42,11 +42,11 @@
 	root@ip-address-ws#/home/ubuntu/chef-repo>knife bootstrap 52.14.45.105 --ssh-user ubuntu --sudo --identity-file /home/ubuntu/chef-node.pem -N ec2-52-14-45-105.us-east-2.compute.amazonaws.com
 	
 10. Goto /chef-repo/cookbooks/ and create cookbook 
-11. To create cookbook - chef generate cookbook first_cookbook
+11. To create cookbook - chef generate cookbook first_cookbook/ (older versions)knife cookbook create first_cookbook
 12. To create recipe - chef generate recipe . first_recipe
 
 13. write recipe and upload the cookbook
-	root@ip-adrees-ws chef-repo/cookbooks/>knife cookbook upload first_cookbook
+	root@ip-adrees-ws chef-repo/cookbooks/>knife cookbook upload first_cookbook/ (berks upload)
 	==>cookbook uploaded successfully
 	
 14. Add recipe to run_list for specific Node or which we need to apply to node.
