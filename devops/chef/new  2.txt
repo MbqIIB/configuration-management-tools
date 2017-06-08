@@ -9,3 +9,5 @@ root@ip-172-31-7-5:~# aws ec2 run-instances --image-id ami-e7527ed7 --count 1 --
 
 
 
+
+
