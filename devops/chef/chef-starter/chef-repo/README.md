@@ -1,31 +1,96 @@
-The chef-repo
-===============
-All installations require a central workspace known as the chef-repo. This is a place where primitive objects--cookbooks, roles, environments, data bags, and chef-repo configuration files--are stored and managed.
+- client-side Chef
+	• Test Kitchen
+	• Chef Solo/Chef Local
+	• Cookbooks
+	
+- Chef Server
+	• On-Premises Chef Server
+	• Chef Zero
+	• Roles, Data Bags, and Environments
+	• Knife
 
-The chef-repo should be kept under version control, such as [git](http://git-scm.org), and then managed as if it were source code.
+- ruby - rvm, rbenv, or chruby
 
-Knife Configuration
--------------------
-Knife is the [command line interface](https://docs.chef.io/knife.html) for Chef. The chef-repo contains a .chef directory (which is a hidden directory by default) in which the Knife configuration file (knife.rb) is located. This file contains configuration settings for the chef-repo.
+Chef tool to install: Chef Development Kit or Chef Client
+--------------------------------------------------------
 
-The knife.rb file is automatically created by the starter kit. This file can be customized to support configuration settings used by [cloud provider options](https://docs.chef.io/plugin_knife.html) and custom [knife plugins](https://docs.chef.io/plugin_knife_custom.html).
+Chef Client versus Chef Development Kit
+-----------------------------------------
+Chef Client (also known as the Chef Omnibus Installer) contains the core components of Chef needed to manage a server or workstation. The installer comprises the entire
+collection of things necessary to run Chef; thus, it is an omnibus installer. Chef Client bundles core application scripts along with the necessary Ruby scripting engine. In
+production environments, Chef Client is installed on every system intended to be managed by Chef.
 
-Also located inside the .chef directory are .pem files, which contain private keys used to authenticate requests made to the Chef server. The USERNAME.pem file contains a private key unique to the user (and should never be shared with anyone). The ORGANIZATION-validator.pem file contains a private key that is global to the entire organization (and is used by all nodes and workstations that send requests to the Chef server).
+The Chef Development Kit is a superset of Chef Client. If you install the Chef Development Kit, there is no need to install the Chef Client. Chef Development Kit includes
+all the components of Chef Client, plus the Chef Development Kit additional best-of-breed tools developed by the Chef community, in one package. Several community developed
+tools have become part of the standard Chef development workflow for many, so now they are bundled together into an officially supported Chef product.
 
-More information about knife.rb configuration options can be found in [the documentation for knife](https://docs.chef.io/config_rb_knife.html).
+Chef Development Kit installer will automatically install Chef and Ruby in the /opt/chefdk/embedded directory
+If it was necessary to choose the Chef Client installation instead, the Chef and Ruby installation will be located under /opt/chef/embedded.
 
-Cookbooks
----------
-A cookbook is the fundamental unit of configuration and policy distribution. A sample cookbook can be found in `cookbooks/starter`. After making changes to any cookbook, you must upload it to the Chef server using knife:
+Linux
+-	
+Chef Development Kit installation:
+- $ which ruby
+- /opt/chefdk/embedded/bin/ruby
+Chef Client installation:
+- $ which ruby
+- /opt/chef/embedded/bin/ruby
 
-    $ knife upload cookbooks/starter
+$ ls /opt/chefdk/bin
+berks chef-service-manager fauxhai nokogiri ruby-rewrite chef chef-shell foodcritic ohai shef 
+chef-apply chef-solo kitchen rubocop tt chef-client chef-vault knife ruby-parse
 
-For more information about cookbooks, see the example files in the `starter` cookbook.
+$ ls /opt/chef/bin
+chef-apply chef-service-manager chef-solo erubis ohai restclient chef-client chef-shell cher-zero knife rackup shef
 
-Roles
------
-Roles provide logical grouping of cookbooks and other roles. A sample role can be found at `roles/starter.rb`.
+- $ chef-client --version
+Chef: 11.14.6
 
-Getting Started
--------------------------
-Now that you have the chef-repo ready to go, check out [Learn Chef](https://learn.chef.io/) to proceed with your workstation setup. If you have any questions about Chef you can always ask [our support team](https://www.chef.io/support/) for a helping hand.
+windows
+-
+Chef Development Kit installation—Windows Command Prompt:
+> where ruby
+C:\opscode\chefdk\embedded\bin\ruby.exe
+
+Chef Development Kit installation—Windows PowerShell:
+PS> (get-command ruby).path
+C:\opscode\chefdk\embedded\bin\ruby.exe
+Chef Client installation—Windows Command Prompt:
+> where ruby
+C:\opscode\chef\embedded\bin\ruby.exe
+
+chef-client --version
+Chef: 11.14.6
+
+
+Install Test Kitchen on Linux (Chef Client Only)
+-
+We’ll be using Test Kitchen to create virtualized sandbox environments in some of the hands-on exercise. The Chef Client installer does not install Test Kitchen, so you’ll need
+to install it manually.
+
+You need to install the test-kitchen gem. A gem is a supporting library or application written in Ruby. You can think of a gem as the equivalent of an installer for Ruby.
+Rubygems.org maintains a central registry of Ruby gems on the Internet. Run the gem install command as root to install the test-kitchen gem. The additional --no-ri and --no-rdoc parameters save time by omitting the step that generates documentation:
+
+linux
+-
+- $ sudo gem install test-kitchen --no-ri --no-rdoc
+- $ gem env
+- $ gem list test-kitchen -i
+true
+
+windows
+-
+> gem install test-kitchen --no-ri --no-rdoc
+> gem env
+> gem list test-kitchen -i
+true
+
+
+
+
+
+
+
+
+
+	
