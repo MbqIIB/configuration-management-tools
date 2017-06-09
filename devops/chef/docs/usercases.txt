@@ -1,0 +1,88 @@
+- Make sure you AWS and Hosted Chef account in you hand
+- install chekDK on workstation and chef-client on Node, 
+- Make sure bootstrap happen between workstation and node happen successfully, for chef-node.pem required for workstation to (knife) bootstrap.
+
+1. create workstation and node machines on EC2 
+	a. write chef cookbook for 'tree' on workstation and apply to node-server ==>configure_tree_ec2
+	b. write chef cookbook for 'tomcat7' on workstation and apply to node-server ==> configure_tomcat_ec2
+		i. also add directory in /var/logs/tomcat7
+		ii. write recipe for service tomcat start
+	d. install jenkins on ubuntu ==>install_jenkins
+	f. deploye jenkins on tomcat ==>deploye_jenkins_tomcat_ec2
+	d. Apply above changes to 'ubuntu', 'centos7' and 'redhat' machines.
+2. create local workinstation windows , install chefDk and apply cookbooks to EC2 machines ==>configure_tree_windows_ec2, configure_tomcat_windows_ec2
+3. create local workstation as windows and create vagrant virtual machines
+	a. install tomcat on ubuntu and access tomcat home page ==>configure_tomcat_ubuntu
+	b. install tomcat on redhat/centos7 and access tomcat home page ==>configure_tomcat_redhat
+	c. merge above ('ubuntu', 'centos7' and 'redhat' changes) to tomcat_on_linux_flavors ==> configure_tomcat_linux_flavors, 
+		- use recipes, attributes, files, templates, remote_files are like jars, wars and ears from nexus repository 
+		i.  add mulitiple recipes to run_list in .kitchen.yml and knife runlist command
+		ii. add recipes to default.rb using include_recipe [cookbook::recipe]
+	d. add logs path, applications, tomcat-users.xml, recipes, attributes, files, templates, remote_files
+	e. deploy jenkins.war on tomcat/webapps - access by using port forwarding and ipconfigs
+	f. deploye jenkins on tomcat ==>deploye_jenkins_tomcat_ec2
+4. use excute for 'yum -y install/update'
+5. configure_apache
+6. configure_nginx
+7. configure_jboss
+8. configure_mysql
+9. configure_postgress
+10.configure_haproxy
+
+11. environments, roles, data_bags and supermarket
+
+
+
+# configure_tomcat_ubuntu
+
+TODO: Enter the cookbook description here.
+
+vagrant global-status
+vagrant destory <id>
+    
+vagrant init ubuntu/trusty64
+vagrant up
+
+chef generate cookbook configure_tomcat_ubuntu
+chef generate recipe . tomcat
+
+berks install
+
+kitchen converge
+kitchen login
+vagrant@default-ubuntu-14.04:~$ sudo -i
+root@default-ubuntu-14.04:~$ service tomcat7 status
+
+http://localhost:8080
+
+kitchen destroy (don't do 'vagrant destroy' this will corrupt the entire cookbooks )
+
+
+
+
+
+================
+aws cli
+ssh -i "ec2-accesskey.pem" ubuntu@ec2-13-58-20-248.us-east-2.compute.amazonaws.com
+
+root@ip-172-31-7-5:~# aws configure
+
+root@ip-172-31-7-5:~# aws ec2 create-key-pair --key-name sampleec2.key --output text > sampleec2.pem
+root@ip-172-31-7-5:~# aws ec2 create-security-group --group-name sampleSGec2 --description "This sample Security Group for EC2"
+root@ip-172-31-7-5:~# aws ec2 authorize-security-group-ingress --group-name sampleSGec2 --protocol tcp --port 22 --cidr 0.0.0.0/0
+root@ip-172-31-7-5:~# aws ec2 run-instances --image-id ami-e7527ed7 --count 1 --instance-type t2.micro --security-groups sampleSGec2 --key-name sampleec2
+
+
+root@ip-172-31-7-5:~# aws ec2 create-key-pair --key-name cli-ec2.key --output text > cli-ec2.pem
+root@ip-172-31-7-5:~# aws ec2 create-security-group --group-name cli-sg-ec2 --description "This is Cli Security Group for EC2"
+root@ip-172-31-7-5:~# aws ec2 authorize-security-group-ingress --group-name cli-sg-ec2 --protocol tcp --port 22 --cidr 0.0.0.0/0
+root@ip-172-31-7-5:~# aws ec2 run-instances --image-id ami-4191b524 --count 1 --instance-type t2.micro --security-groups cli-sg-ec2 --key-name cli-ec2
+
+aws ec2 create-key-pair --key-name cli-ec2_1.key --output text > cli-ec2_1.pem
+chmod 0400 cli-ec2_1.pem
+aws ec2 create-security-group --group-name cli-sg-ec2_1 --description "This is Cli Security Group for EC2"
+aws ec2 authorize-security-group-ingress --group-name cli-sg-ec2_1 --protocol tcp --port 22 --cidr 0.0.0.0/0
+aws ec2 run-instances --image-id ami-4191b524 --count 1 --instance-type t2.micro --security-groups cli-sg-ec2_1 --key-name ./cli-ec2_1
+
+
+

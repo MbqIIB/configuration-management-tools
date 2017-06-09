@@ -1,0 +1,13 @@
+ssh -i "ec2-accesskey.pem" ubuntu@ec2-13-58-20-248.us-east-2.compute.amazonaws.com
+
+root@ip-172-31-7-5:~# aws configure
+
+root@ip-172-31-7-5:~# aws ec2 create-key-pair --key-name sampleec2.key --output text > sampleec2.pem
+root@ip-172-31-7-5:~# aws ec2 create-security-group --group-name sampleSGec2 --description "This sample Security Group for EC2"
+root@ip-172-31-7-5:~# aws ec2 authorize-security-group-ingress --group-name sampleSGec2 --protocol tcp --port 22 --cidr 0.0.0.0/0
+root@ip-172-31-7-5:~# aws ec2 run-instances --image-id ami-e7527ed7 --count 1 --instance-type t2.micro --security-groups sampleSGec2 --key-name sampleec2
+
+
+
+
+

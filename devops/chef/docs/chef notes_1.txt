@@ -1,0 +1,199 @@
+1. Install EC2 instance for Node - AWS - Ubuntu - make sure chef-node.pem stored in local machine 
+2. Install EC2 instance for Workstation - AWS - Ubuntu make sure chef-ws.pem stored in local machine 
+
+3. Register/login to Hosted Chef Server - https://manage.chef.io/login
+
+4. we can connect these system by using ssh commands
+	git>ssh -i "chef-node.pem" ubuntu@ec2-52-14-45-105.us-east-2.compute.amazonaws.com
+	ubuntu@ip-address-node~> sudo -i
+	root@ip-address-node#> apt-get install 
+	
+	git>ssh -i "chef-ws.pem" ubuntu@ec2-52-15-158-151.us-east-2.compute.amazonaws.com
+	ubuntu@ip-address-ws~> sudo -i
+	root@ip-address-ws#> apt-get install 
+	
+5. Get StarterKit.zip from Hosted Chef Server organization tab
+
+6. Copy StarterKit.zip from local machine to Workstation using scp command
+	git> scp -i "chef-ws.pem" -r /d/DevOpsWS/chef-starter/chef-repo/ ubuntu@ec2-52-15-158-151.us-east-2.compute.amazonaws.com:/home/ubuntu/
+	git> ssh -i "chef-ws.pem" ubuntu@ec2-52-15-158-151.us-east-2.compute.amazonaws.com
+	
+	ubuntu@ip-address~ws> sudo -i
+	root@ip-address-ws> cd /home/ubuntu/ ls -l verify above files
+	root@ip-address-ws:/home/ubuntu/#> ls -l
+	
+7. Copy chef-node.pem from local machine to Workstation for Node Bootstrapping using scp command
+	== open this as adminstrater because we could not copy .pem files without adminstration access.==
+	git>scp -i "chef-ws.pem" -r /C/Users/AnithaAmaresh/Downloads/chef-node.pem ubuntu@ec2-52-15-158-151.us-east-2.compute.amazonaws.com:/home/ubuntu/
+	=> do above step in workstation
+	
+8. Install ChefDK/Knife on Workstation
+	root@ip-address-ws> curl -L https://www.opscode.com/chef/install.sh | bash
+	#>knife --version
+	==>Chef 13.0.118
+	
+9. perform bootstrap using knife bootstrap command
+	root@ip-address-ws#>knife bootstrap ipaddress<public ip of node-server>
+					--ssh-user ubuntu
+					--sudo
+					--identity-file /ubuntu/home/chef-node.pem
+					-N <public DNS name for Node-server which will be showned in Hosted Chef server>
+					
+	root@ip-address-ws#/home/ubuntu/chef-repo>knife bootstrap 52.14.45.105 --ssh-user ubuntu --sudo --identity-file /home/ubuntu/chef-node.pem -N ec2-52-14-45-105.us-east-2.compute.amazonaws.com
+	
+10. Goto /chef-repo/cookbooks/ and create cookbook 
+11. To create cookbook - chef generate cookbook first_cookbook/ (older versions)knife cookbook create first_cookbook
+12. To create recipe - chef generate recipe . first_recipe
+
+13. write recipe and upload the cookbook
+	root@ip-adrees-ws chef-repo/cookbooks/>knife cookbook upload first_cookbook/ (berks upload)
+	==>cookbook uploaded successfully
+	
+14. Add recipe to run_list for specific Node or which we need to apply to node.
+	root@ip-adrees chef-repo/cookbooks/first_cookbook/recipes>knife node run_list add <public DNS name of Node server> "recipe[first_cookbook::default]"
+	root@ip-adrees chef-repo/cookbooks/first_cookbook/recipes>knife node run_list add ec2-52-14-45-105.us-east-2.compute.amazonaws.com "recipe[first_cookbook::default]"
+
+15. goto Node-server and run "chef-client" for latest covergence
+	root@ip-address-node /home>chef-client
+	changes are available now-->verify it covergences are applied
+============================================================
+For Windows Workstation
+1. Install ChefDk
+2. Install Visual Studio Code for development
+3. Vagrant Installaion for local machine verification instead for virtual machines == >
+4. vagrant init ubuntu/trusty64 ==> this will generate the "vagrantfile" virtual machine details
+4. Create cookbook using command line - /chef-repo/cookbooks>chef generate cookbook tomcat_vagrant_cookbook 
+5. run berk command on following path	/././tomcat_vagrant_cookbook>berks install 
+	==> berk and dependencies are installed successfully
+6. kitchen converge
+7. kitchen login
+8. verify the applied "recipes"
+9. support commands -
+
+knife bootstrap 13.58.141.138 --ssh-user ubuntu --sudo --identity-file C:/Users/AnithaAmaresh/Downloads/chef-node.pem -N ec2-13-58-141-138.us-east-2.compute.amazonaws.com
+http://ec2-13-58-141-138.us-east-2.compute.amazonaws.com:8080/
+vagrant init ubuntu/trusty64
+vagrant up
+vagrant ssh
+vagrant stop
+vagrant destory
+vagrant shutdown
+
+berks install
+
+kitchen list
+
+kitchen converge
+
+kitchen test
+kitchen init
+kitchen create
+kitchen login
+kitchen destory
+
+
+# chef gem install kitchen
+# chef gem install kitchen-vagrant
+# chef gem unstall kitchen -v <version>
+# chef gem list kitchen-vagrant	
+
+=========================================
+For Windows Workstation
+1. Install ChefDk
+2. Install Visual Studio Code for development
+3. Create cookbook using command line - /chef-repo/cookbooks>chef generate cookbook tomcat_on_ec2
+4. knife bootstrap 13.58.141.138 --ssh-user ubuntu --sudo --identity-file C:/Users/AnithaAmaresh/Downloads/chef-node.pem -N ec2-13-58-141-138.us-east-2.compute.amazonaws.com
+5. run berk command on following path	tomcat_on_ec2>berks upload /berks install
+	==> berk and dependencies are installed / uploaded successfully
+6. open chef-node with ssh and run the follosing on chef-client
+	=>new converges will be applied.
+7. and verify the following urls
+8. http://ec2-13-58-141-138.us-east-2.compute.amazonaws.com:8080/
+   http://ec2-13-58-141-138.us-east-2.compute.amazonaws.com:8080/docs/
+   http://ec2-13-58-141-138.us-east-2.compute.amazonaws.com:8080/examples/
+   http://ec2-13-58-141-138.us-east-2.compute.amazonaws.com:8080/manager/html
+   
+9. if above urls not open with any reason, there might be problem with aws, that is in aws security group, make sure that http port 8080 opened for public.
+	this change we have to do manually , because 8080 http is not pre-configured.
+==============
+
+ec2 from aws cli
+----------------
+http://www.thegeekstuff.com/2016/04/aws-ec2-cli-examples/
+
+1. aws ec2 create-security-group --group-name devenv-sg --description "security group for development environment in EC2"
+	=>
+	{
+		"GroupId": "sg-b018ced5"
+	}
+	
+	{
+		"GroupId": "sg-a43e3ac3"
+	}
+2. aws ec2 authorize-security-group-ingress --group-name devenv-sg --protocol tcp --port 22 --cidr 0.0.0.0/0
+3. aws ec2 create-key-pair --key-name devenv-key --query "KeyMaterial" --output text > devenv-key.pem
+
+4. aws ec2 run-instances --image-id ami-e7527ed7 --security-group-ids sg-36aa9f4d --count 1 --instance-type t2.micro --key-name devenv-key --query 'Instances[0].InstanceId'
+   aws ec2 run-instances --image-id ami-2afbde4a --security-group-ids sg-a43e3ac3 --count 1 --instance-type t2.micro --key-name devenv-key --query 'Instances[0].InstanceId'
+	ami-e7527ed7
+	=> "i-00052874cffcd7bfa"
+	=> "i-0e69fd92a71c11410"
+
+5. aws ec2 describe-instances --instance-ids i-0e69fd92a71c11410 --query 'Reservations[0].Instances[0].PublicIpAddress'
+	=> 54.149.161.114
+	==>54.67.32.6
+
+6. chmod 0400 devenv-key.pem
+7. ssh -i devenv-key.pem ubuntu@54.67.32.6
+
+	- aws ec2 describe-security-groups
+	- aws ec2 monitor-instances --instance-ids i-00052874cffcd7bfa
+	- aws ec2 monitor-instances --instance-ids i-0e69fd92a71c11410
+
+8. aws ec2 terminate-instances --instance-ids <your instance id here> --region <your region here>
+9. aws ec2 delete-security-group --group-id <your group id here> --region <your region here>
+
+10. aws ec2 create-volume --size 5 --region us-west-1 --availability-zone us-west-1b --volume-type gp2
+{
+    "AvailabilityZone": "us-west-2b",
+    "Encrypted": false,
+    "VolumeType": "gp2",
+    "VolumeId": "vol-0b6715a3d3c052fd0",
+    "State": "creating",
+    "Iops": 100,
+    "SnapshotId": "",
+    "CreateTime": "2017-06-05T03:35:34.414Z",
+    "Size": 5
+}
+
+{
+    "AvailabilityZone": "us-west-1b",
+    "Encrypted": false,
+    "VolumeType": "gp2",
+    "VolumeId": "vol-064ff8842febc70f4",
+    "State": "creating",
+    "Iops": 100,
+    "SnapshotId": "",
+    "CreateTime": "2017-06-05T04:09:13.769Z",
+    "Size": 5
+}
+
+11. aws ec2 attach-volume --volume-id vol-064ff8842febc70f4 --instance-id i-0e69fd92a71c11410 --device /dev/sdg
+
+12. after this login using ssh -i, then mount, unmount disk operation
+13. df -h
+14. fdisk -l
+15. mkfs -t ext4 /dev/xvdf
+16. mkdir /my_new_dir
+17. mount /dev/xvdf /my_new_dir/
+18. df -h
+
+====================
+ssh -i "ec2-accesskey.pem" ubuntu@ec2-13-58-20-248.us-east-2.compute.amazonaws.com
+
+root@ip-172-31-7-5:~# aws configure
+
+root@ip-172-31-7-5:~# aws ec2 create-key-pair --key-name sampleec2.key --output text > sampleec2.pem
+root@ip-172-31-7-5:~# aws ec2 create-security-group --group-name sampleSGec2 --description "This sample Security Group for EC2"
+root@ip-172-31-7-5:~# aws ec2 authorize-security-group-ingress --group-name sampleSGec2 --protocol tcp --port 22 --cidr 0.0.0.0/0
+root@ip-172-31-7-5:~# aws ec2 run-instances --image-id ami-e7527ed7 --count 1 --instance-type t2.micro --security-groups sampleSGec2 --key-name sampleec2
