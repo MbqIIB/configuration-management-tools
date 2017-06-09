@@ -85,6 +85,20 @@ windows
 > gem list test-kitchen -i
 true
 
+Generate the Cookbook Skeleton
+-
+Chef Development Kit:
+-
+$ chef generate cookbook apache
+$ cd apache
+
+Chef Client:
+-
+$ knife cookbook create apache --cookbook-path .
+$ cd apache
+$ kitchen init --create-gemfile
+$ bundle install
+
 
 
 
