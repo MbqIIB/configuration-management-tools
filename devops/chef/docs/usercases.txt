@@ -1,4 +1,4 @@
-- Make sure you AWS and Hosted Chef account in you hand
+- Make sure you AWS and Hosted Chef account in your hand
 - install chekDK on workstation and chef-client on Node, 
 - Make sure bootstrap happen between workstation and node happen successfully, for chef-node.pem required for workstation to (knife) bootstrap.
 
@@ -30,8 +30,6 @@
 10.configure_haproxy
 
 11. environments, roles, data_bags and supermarket
-
-
 
 # configure_tomcat_ubuntu
 
