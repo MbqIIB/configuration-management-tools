@@ -11,6 +11,7 @@ vagrant@localhost > sudo -i
 root@localhost > 
 
 # run following command on where ever the .chef folder is present
+cookbooks> chef generate cookbook chef_command_app
 chef-repo> knife bootstrap 192.168.33.10 -x vagrant -P vagrant --sudo -N ubuntu.vagrant.com
 
 chef_command_app> knife cookbook upload chef_command_app
@@ -22,4 +23,8 @@ From Hosted Server -
 3. save the run list
 4. run the 'chef-client' from terminal
 	root@localhost > chef-client
+	
+Stand alone client - you can also do something like this on local machine -
+-
+chef_command_app/recipes $ sudo chef-apply default.rb
 

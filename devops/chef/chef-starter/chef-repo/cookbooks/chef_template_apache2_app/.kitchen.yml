@@ -13,17 +13,13 @@ verifier:
   name: inspec
 
 platforms:
-  #- name: ubuntu-14.04
-   # driver:
-    #  box: ubuntu/trusty64
-  - name: centos-7
-    driver:
-      box: centos/7
+  - name: ubuntu-16.04
+  - name: centos-7.3
 
 suites:
   - name: default
     run_list:
-      - recipe[chef_command_app::default]
+      - recipe[chef_template_apache2_app::default]
     verifier:
       inspec_tests:
         - test/smoke/default

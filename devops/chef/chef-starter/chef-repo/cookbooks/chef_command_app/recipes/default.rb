@@ -18,9 +18,9 @@ execute 'write status' do
 end
 
 # 'file' Delete the /tmp/bacon file
-file '/tmp/bacon' do
-  action :delete
-end
+#file '/tmp/bacon' do
+ # action :delete
+#end
 
 # 'gem_package' Install bundler to manage dependencies
 # gem_package 'bundler'
