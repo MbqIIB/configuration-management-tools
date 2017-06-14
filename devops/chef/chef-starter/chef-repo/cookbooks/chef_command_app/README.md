@@ -10,7 +10,7 @@ Create Vagrant Machine for Node
 vagrant@localhost > sudo -i
 root@localhost > 
 
-# run following command where ever the .chef folder is present
+# run following command on where ever the .chef folder is present
 chef-repo> knife bootstrap 192.168.33.10 -x vagrant -P vagrant --sudo -N ubuntu.vagrant.com
 
 chef_command_app> knife cookbook upload chef_command_app
