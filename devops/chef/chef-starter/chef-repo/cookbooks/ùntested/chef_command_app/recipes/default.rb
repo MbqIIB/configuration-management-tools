@@ -18,9 +18,9 @@ execute 'write status' do
 end
 
 # 'file' Delete the /tmp/bacon file
-file '/tmp/bacon' do
-  action :delete
-end
+#file '/tmp/bacon' do
+ # action :delete
+#end
 
 # 'gem_package' Install bundler to manage dependencies
 # gem_package 'bundler'
@@ -32,9 +32,9 @@ end
 # user 'bacon'
 
 # Link /tmp/bacon to /tmp/delicious
-link '/tmp/bacon' do
-  to '/tmp/delicious'
-end
+#link '/tmp/bacon' do
+ # to '/tmp/delicious'
+#end
 
 # Mount /dev/sda8
 # mount '/dev/sda8'
@@ -43,7 +43,7 @@ end
 # package 'apache2'
 
 # 'remote_file' Download a remote file to /tmp/bacon
-remote_file '/tmp/bacon' do
-  source 'http://bacon.org/bits.tar.gz'
-end
+#remote_file '/tmp/bacon' do
+ # source 'http://bacon.org/bits.tar.gz'
+#end
 
