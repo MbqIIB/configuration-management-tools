@@ -8,3 +8,5 @@ vagrant ssh
 vagrant halt
 vagrant shutdown
 
+vagrant reload --provision
+
