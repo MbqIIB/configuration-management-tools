@@ -22,7 +22,7 @@ http://www.thegeekstuff.com/2016/04/aws-ec2-cli-examples/
 
 5. aws ec2 describe-instances --instance-ids i-0e69fd92a71c11410 --query 'Reservations[0].Instances[0].PublicIpAddress'
 	=> 54.149.161.114
-	==>54.67.32.6
+	=> 54.67.32.6
 
 6. chmod 0400 devenv-key.pem
 7. ssh -i devenv-key.pem ubuntu@54.67.32.6
