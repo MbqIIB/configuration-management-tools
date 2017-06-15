@@ -1,0 +1,2 @@
+- knife role from file ~/chef-repo/environments/development.rb
+- knife environment from file ~/chef-repo/environments/development.rb
