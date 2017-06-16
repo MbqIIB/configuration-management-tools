@@ -1,0 +1,1 @@
+default['chef_server_conf_app']['content'] = "(attribute) install webserver apache2/nginx!"
