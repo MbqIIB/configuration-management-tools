@@ -11,4 +11,7 @@ aws rds create-db-snapshot --db-snapshot-identifier mc-cli-rds-snapshot --db-ins
 aws rds restore-db-instance-from-db-snapshot --db-instance-identifier mc-cli-rds-restored-db --db-snapshot-identifier mc-cli-rds-snapshot
 
 aws rds start-db-instance --db-instance-identifier mc-cli-rds
-aws rds stop-db-instance --db-instance-identifier mc-cli-rds
+aws rds start-db-instance --db-instance-identifier mc-cli-rds-snapshot
+
+aws rds stop-db-instance --db-instance-identifier mc-cli-rds 
+--db-snapshot-identifier mc-cli-rds-2017-06-22-03-46
