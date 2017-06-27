@@ -24,6 +24,14 @@ case $operatingsystem {
   # "fail" is a function. We'll get to those later.
 }
 
+# above will re-written to 
+case $operatingsystem {
+  centos, redhat: { $apache = "httpd" }
+  debian, ubuntu: { $apache = "apache2" }
+  default: { fail("Unrecognized operating system for webserver") }
+}
+
+
 package {'apache':
   name => $apache,
   ensure => latest,
