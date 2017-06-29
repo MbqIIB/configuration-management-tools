@@ -1,1 +1,8 @@
-puppet apply -e <file_name.pp>
+yum install puppet
+
+puppet module generate [module-name]
+
+puppet parser validate path/to/[file_name.pp]
+
+puppet apply -e path/to/[file_name.pp]
+
