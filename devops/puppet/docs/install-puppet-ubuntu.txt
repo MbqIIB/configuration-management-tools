@@ -4,8 +4,8 @@ https://www.howtoforge.com/puppet-ubuntu-14.04
 
 nano /etc/hosts
 
-192.168.0.100  server1.example.com     server1 
-192.268.0.101  desktop1.example.com    desktop1
+192.168.33.11  vagrant-puppet-master  vagrant-puppet-master 
+192.168.33.10  vagrant-puppet-agent  vagrant-puppet-agent
 
 ntpdate pool.ntp.org ; apt-get update && sudo apt-get -y install ntp ; service ntp restart
 
@@ -25,7 +25,7 @@ nano /etc/apt/preferences.d/00-puppet.pref
 
 # /etc/apt/preferences.d/00-puppet.pref
 Package: puppet puppet-common puppetmaster-passenger
-Pin: version 3.7*
+Pin: version 3.8*
 Pin-Priority: 501
 
 
