@@ -6,3 +6,18 @@ puppet parser validate path/to/[file_name.pp]
 
 puppet apply -e path/to/[file_name.pp]
 
+====
+
+wget https://apt.puppetlabs.com/puppetlabs-release-trusty.deb
+sudo dpkg -i puppetlabs-release-trusty.deb
+sudo apt-get update
+
+sudo apt-get install puppet
+
+sudo apt-get update
+sudo puppet resource package puppet ensure=latest
+
+cat /etc/default/puppet
+to start manually - sed -i /etc/default/puppet -e "s/START=no/START=yes/"
+service puppet status
+service puppet start
