@@ -1,0 +1,11 @@
+Puppet Master
+-------------
+puppet module generate [module_name]
+
+puppet parser validate path/to/[file_name.pp]
+
+puppet apply -e path/to/[file_name.pp]
+
+Puppet Agent
+------------
+puppet agent --test
