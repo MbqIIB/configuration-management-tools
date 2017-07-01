@@ -86,7 +86,7 @@ factpath=$vardir/lib/facter
 #ssl_client_verify_header = SSL_CLIENT_VERIFY
 
 [agent]
-server = server1.example.com
+server = vagrant-puppet-master
 
 nano /etc/default/puppet
 
@@ -95,4 +95,17 @@ START=yes
 [...]
 
 service puppet start
+
+---------------------
+From Puppet Master  - for cert sign follow the below step
+
+puppet cert list
+
+puppet cert list -all
+
+sign client cert - puppet cert sign vagrant-puppet-agent
+
+remove sign from master - puppet cert clean desktop1.example.com
+
+
 
