@@ -1,0 +1,98 @@
+https://vexxhost.com/resources/tutorials/how-to-install-and-setup-puppet-master-and-client-on-ubuntu-14-04/
+https://www.howtoforge.com/puppet-ubuntu-14.04
+
+
+nano /etc/hosts
+
+192.168.0.100  server1.example.com     server1 
+192.268.0.101  desktop1.example.com    desktop1
+
+ntpdate pool.ntp.org ; apt-get update && sudo apt-get -y install ntp ; service ntp restart
+
+puppet server/master 
+---------------------
+cd /tmp
+wget https://apt.puppetlabs.com/puppetlabs-release-trusty.deb
+dpkg -i puppetlabs-release-trusty.deb
+apt-get update
+
+apt-get install puppetmaster
+
+puppet -V
+
+
+nano /etc/apt/preferences.d/00-puppet.pref
+
+# /etc/apt/preferences.d/00-puppet.pref
+Package: puppet puppet-common puppetmaster-passenger
+Pin: version 3.7*
+Pin-Priority: 501
+
+
+nano /etc/puppet/puppet.conf
+(comment temlatedir)
+
+[main]
+logdir=/var/log/puppet
+vardir=/var/lib/puppet
+ssldir=/var/lib/puppet/ssl
+rundir=/var/run/puppet
+factpath=$vardir/lib/facter
+#templatedir=$confdir/templates
+
+[master]
+# These are needed when the puppetmaster is run by passenger
+# and can safely be removed if webrick is used.
+ssl_client_header = SSL_CLIENT_S_DN
+ssl_client_verify_header = SSL_CLIENT_VERIFY
+
+service puppetmaster stop
+service puppetmaster start
+
+puppet agent/client
+-------------------
+
+cd /tmp
+wget https://apt.puppetlabs.com/puppetlabs-release-trusty.deb
+dpkg -i puppetlabs-release-trusty.deb
+apt-get update
+
+apt-get install puppet
+
+puppet -V
+
+nano /etc/apt/preferences.d/00-puppet.pref
+
+# /etc/apt/preferences.d/00-puppet.pref
+Package: puppet puppet-common puppetmaster-passenger
+Pin: version 3.8*
+Pin-Priority: 501
+
+nano /etc/puppet/puppet.conf
+(comment templatedir and all master entries and agent)
+
+[main]
+logdir=/var/log/puppet
+vardir=/var/lib/puppet
+ssldir=/var/lib/puppet/ssl
+rundir=/var/run/puppet
+factpath=$vardir/lib/facter
+#templatedir=$confdir/templates
+
+#[master]
+## These are needed when the puppetmaster is run by passenger
+## and can safely be removed if webrick is used.
+#ssl_client_header = SSL_CLIENT_S_DN
+#ssl_client_verify_header = SSL_CLIENT_VERIFY
+
+[agent]
+server = server1.example.com
+
+nano /etc/default/puppet
+
+[...]
+START=yes
+[...]
+
+service puppet start
+
