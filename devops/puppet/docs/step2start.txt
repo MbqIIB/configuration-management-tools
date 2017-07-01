@@ -6,6 +6,10 @@ puppet parser validate path/to/[file_name.pp]
 
 puppet apply -e path/to/[file_name.pp]
 
+
+root@vagrant-puppet-master:/etc/puppet/environments/example_env/modules# puppet parser validate helloworld-app/manifests/init.pp
+root@vagrant-puppet-master:/etc/puppet/environments/example_env/modules# puppet apply -e helloworld-app/manifests/init.pp
+
 Puppet Agent
 ------------
 puppet agent --test

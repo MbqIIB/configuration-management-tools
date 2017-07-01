@@ -37,6 +37,6 @@
 #
 class app {
 
-  include motd,
+  include motd
 
 }
