@@ -1,3 +1,3 @@
-class app {
-  include motd
+class helloworld-app {
+  include helloworld-app::motd
 }
