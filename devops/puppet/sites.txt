@@ -1,0 +1,2 @@
+https://www.youtube.com/watch?v=a5aMYLVPGpY
+http://www.itzgeek.com/how-tos/linux/how-to-create-puppet-manifests-modules-on-centos-rhel.html
