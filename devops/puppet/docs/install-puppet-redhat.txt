@@ -4,7 +4,7 @@ rpm -ivh https://yum.puppetlabs.com/el/6.5/products/x86_64/puppetlabs-release-6-
 
 On CentOS/RHEL 7:
 -----------------
-rpm -ivh https://yum.puppetlabs.com/el/7/products/x86_64/puppetlabs-release-7-10.noarch.rpm
+rpm -ivh https://yum.puppetlabs.com/puppetlabs-release-el-7.noarch.rpm
 
 Server Installation
 -------------------
@@ -17,9 +17,19 @@ When the installation is done, set the Puppet server to automatically start on b
 chkconfig puppetmaster on
 service puppetmaster start
 
+puppet cert sign vagrant-puppet-agent
+puppet cert sign centos7-puppet-agent
+
 Agent Installaion
 ----------------
 yum install puppet
+
 chkconfig puppet on
+
+service puppet status
+
+service puppet start
+
+service puppet status
 
 ------------------------------------------------------------------------------------------------------
