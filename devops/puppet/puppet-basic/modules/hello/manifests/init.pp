@@ -1,0 +1,3 @@
+class hello {
+  include motd
+}

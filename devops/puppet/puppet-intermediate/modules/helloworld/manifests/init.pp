@@ -1,3 +1,0 @@
-class helloworld {
-  include motd
-}

@@ -1,3 +1,3 @@
 node 'vagrant-puppet-agent' {
-  include helloworld
+  include apache
 }

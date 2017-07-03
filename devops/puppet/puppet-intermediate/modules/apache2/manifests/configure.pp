@@ -1,4 +1,4 @@
-class helloworld::motd {
+class apache::configure {
 
   file { '/tmp/hello':
      owner  => 'root',

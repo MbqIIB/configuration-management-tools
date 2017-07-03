@@ -1,4 +1,4 @@
-class helloworld::motd {
+class hello::motd {
 
   file { '/tmp/hello':
      owner  => 'root',
