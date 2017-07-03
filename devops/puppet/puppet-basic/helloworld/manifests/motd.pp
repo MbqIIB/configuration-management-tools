@@ -1,6 +1,6 @@
-class app::motd {
+class helloworld::motd {
 
-  file { '/tmp/motd':
+  file { '/tmp/hello':
      owner  => 'root',
      group  => 'root',
      mode    => '0644',
