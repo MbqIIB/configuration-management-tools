@@ -1,13 +1,13 @@
-class apache2::configure {
+class apache2::configure($package_name) {
   
-  package { 'apache2':
+  package { $package_name:
     ensure => installed,
   }
   
-  service { 'apache2':
+  service { $package_name:
     ensure  => true,
     enable  => true,
-    require => Package['apache2'],
+    require => Package[$package_name],
  }
  
 }
