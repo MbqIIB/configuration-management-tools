@@ -13,5 +13,5 @@ root@vagrant-puppet-master:/etc/puppet/environments/example_env/modules# puppet 
 Puppet Agent
 ------------
 puppet agent --test
+puppet agent -t
 
-http://www.bogotobogo.com/DevOps/Puppet/puppet_basic_tasks_with_ec2_master_agent_nodes.php

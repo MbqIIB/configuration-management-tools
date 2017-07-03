@@ -97,7 +97,7 @@ START=yes
 service puppet start
 
 
-From Puppet Master  - for cert sign follow the below step
+From Puppet Master  - for cert sign follow the below steps
 ----------------------------------------------------------
 puppet cert list
 

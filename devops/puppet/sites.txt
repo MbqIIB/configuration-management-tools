@@ -1,3 +1,5 @@
 https://www.youtube.com/watch?v=a5aMYLVPGpY
 http://www.itzgeek.com/how-tos/linux/how-to-create-puppet-manifests-modules-on-centos-rhel.html
 https://help.ubuntu.com/lts/serverguide/puppet.html
+
+http://www.bogotobogo.com/DevOps/Puppet/puppet_basic_tasks_with_ec2_master_agent_nodes.php

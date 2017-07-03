@@ -1,8 +1,25 @@
+On CentOS/RHEL 6.5:
+-------------------
+rpm -ivh https://yum.puppetlabs.com/el/6.5/products/x86_64/puppetlabs-release-6-10.noarch.rpm
+
+On CentOS/RHEL 7:
+-----------------
+rpm -ivh https://yum.puppetlabs.com/el/7/products/x86_64/puppetlabs-release-7-10.noarch.rpm
+
+Server Installation
+-------------------
+Install the package "puppet-server" on the server you want to use as a master.
+
+yum install puppet-server
+
+When the installation is done, set the Puppet server to automatically start on boot and turn it on.
+
+chkconfig puppetmaster on
+service puppetmaster start
+
+Agent Installaion
+----------------
 yum install puppet
+chkconfig puppet on
 
-puppet module generate [module-name]
-
-puppet parser validate path/to/[file_name.pp]
-
-puppet apply -e path/to/[file_name.pp]
-
+------------------------------------------------------------------------------------------------------
