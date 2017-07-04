@@ -3,8 +3,8 @@
   - yaml
  
 :hierarchy:
- # - %{fqdn}
-  - %{osfamily}
+  - node/%{fqdn}
+  - node/%{osfamily}
   - common
  
 :yaml:
