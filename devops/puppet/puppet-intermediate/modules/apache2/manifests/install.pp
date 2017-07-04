@@ -1,4 +1,4 @@
-class apache2::configure {
+class apache2::install {
   
   case $operatingsystem {
     centos, redhat: { $package_name = 'httpd' }

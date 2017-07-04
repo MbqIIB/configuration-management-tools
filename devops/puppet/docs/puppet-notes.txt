@@ -1,0 +1,7 @@
+package =>  ensure => present (installed) , absent, purged, held, latest
+	
+service =>  ensure => stopped (also called false), running (also called true),
+			enable => true, false, manual, mask,
+			
+file  => 	path => '/etc/motd',
+

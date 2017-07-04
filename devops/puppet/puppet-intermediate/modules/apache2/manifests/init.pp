@@ -1,3 +1,3 @@
 class apache2 {
-  include configure
+  include install
 }
