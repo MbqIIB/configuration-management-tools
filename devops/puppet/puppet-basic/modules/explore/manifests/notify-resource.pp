@@ -1,26 +1,3 @@
-
-file {'testfile':
-  path => '/tmp/testfile',
-  ensure => present,
-  mode => 0640,
-  content => "I'm a test file.",
-}
-
-file {'/tmp/test1':
-  ensure => present,
-  content => "Hi.",
-}
-
-file {'/tmp/test2':
-  ensure => directory,
-  mode => 0644,
-}
-
-file {'/tmp/test3':
-  ensure => link,
-  target => '/tmp/test1',
-}
-
 notify {"I'm notifying you.":} # Whitespace is fungible, remember.
 notify {"So am I!":}
 
@@ -31,9 +8,8 @@ notify {'bignotify':
 }
   
   
-  
-  
-  
+# To validate
+# puppet parser validate explore/manifests/notify-resource.pp
 
-# to run this use 
-# puppet apply basic_file_commands.pp
+# To run 
+# puppet apply explore/manifests/notify-resource.pp

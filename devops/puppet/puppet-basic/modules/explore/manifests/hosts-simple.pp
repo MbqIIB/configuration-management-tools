@@ -1,11 +1,11 @@
 
-host {'self':
+host { 'self':
   ensure => present,
   name => $::hostname,
   ip => $::ipaddress,
 }
 
-file {'motd':
+file { 'motd':
   ensure => file,
   path => '/etc/motd',
   mode => 0644,
