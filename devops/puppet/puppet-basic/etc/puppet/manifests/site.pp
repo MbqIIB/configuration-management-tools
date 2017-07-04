@@ -1,5 +1,7 @@
-hiera_include('classes', '')
+#hiera_include('classes', '')
 
 node 'vagrant-puppet-agent' {
-  include hello
+  # include hello
+  include hieradata
+  
 }
