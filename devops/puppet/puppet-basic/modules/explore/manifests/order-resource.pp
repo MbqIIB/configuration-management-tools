@@ -20,7 +20,7 @@ notify { 'after':
 File['/tmp/test1'] -> Notify['after']
 
 # To validate
-# puppet parser validate explore/manifests/order_resource.pp
+# puppet parser validate explore/manifests/order-resource.pp
 
 # To run 
-# puppet apply explore/manifests/order_resource.pp
+# puppet apply explore/manifests/order-resource.pp

@@ -8,6 +8,13 @@ notify {'bignotify':
 }
   
   
+notify { "Mac warning": 
+	message => $operatingsystem ? { 
+		'Darwin' => "This seems to be a Mac.", 
+		 default => "And I’m a PC.", 
+		},
+}
+  
 # To validate
 # puppet parser validate explore/manifests/notify-resource.pp
 
