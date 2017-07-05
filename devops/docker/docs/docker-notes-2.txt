@@ -12,7 +12,10 @@ CMD ["echo", "Hello World !!!"]
 
 
 helloworld-app > docker build -t helloworld-app .
+helloworld-app > docker build -t helloworld-app:1.0 .
 
 helloworld-app > docker images
 
 helloworld-app > docker run helloworld-app
+helloworld-app > docker run helloworld-app:1.0
+=>Hello World !!!
