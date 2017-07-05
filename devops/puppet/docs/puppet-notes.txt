@@ -5,3 +5,16 @@ service =>  ensure => stopped (also called false), running (also called true),
 			
 file  => 	path => '/etc/motd',
 
+Modules have a standard structure:
+----------------------------------
+mysql/            # Main module directory
+
+mysql/manifests/  # Manifests directory. Puppet code here. Required.
+mysql/lib/        # Plugins directory. Ruby code here
+mysql/templates/  # ERB Templates directory
+mysql/files/      # Static files directory
+mysql/spec/       # Puppet-rspec test directory
+mysql/tests/      # Tests / Usage examples directory
+
+mysql/Modulefile  # Module's metadata descriptor
+

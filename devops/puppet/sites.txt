@@ -5,3 +5,4 @@ https://help.ubuntu.com/lts/serverguide/puppet.html
 http://www.bogotobogo.com/DevOps/Puppet/puppet_basic_tasks_with_ec2_master_agent_nodes.php
 
 http://www.slashroot.in/puppet-hiera-tutorial-example-configuration
+http://www.example42.com/tutorials/PuppetTutorial/#slide-1
