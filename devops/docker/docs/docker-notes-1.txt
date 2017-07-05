@@ -26,7 +26,7 @@ $ sudo docker search nginx
 $ sudo docker pull nginx
 
 $ sudo docker run --name docker-nginx -p 80:80 nginx
-=>it stays in prompt
+=>it stays in prompt, this is called interactive mode
 
 # detached mode
 $ sudo docker run --name docker-nginx -d -p 80:80 nginx 
@@ -44,10 +44,29 @@ $ sudo docker search nginx
 $ sudo dokcer pull jenkins
 
 $ sudo docker run --name docker-jenkins -p 8080:8080 -p 50000:50000 jenkins
-=>it stays in prompt and write logs in console 
+=>it stays in prompt and write logs in console , this is called interactive mode
 
 $ sudo docker run --name docker-jenkins -d -p 8080:8080 -p 50000:50000 jenkins
 =>print container-id and it come out from prompt
+
+-----------------------------------------
+$ sudo docker attach docker-jenkins
+=> this is became the interactive mode
+
+$ sudo docker exec docker-jenkins cat /var/jenkins_home/secrets/initialAdminPassword
+4012148b0387426ea69f20edb129e65d
+
+$ sudo docker exec docker-jenkins ls /var/jenkins_home/
+
+root@vagrant-docker-ubuntu:~# docker exec -it docker-jenkins /bin/bash
+jenkins@331c31d91fb6:/$
+
+-------------------------------------------
+$ sudo docker run --name docker-jenkins -it -p 8080:8080 jenkins /bin/bash
+root@vagrant-docker-ubuntu:~# sudo docker run --name docker-jenkins -it -p 8080:8080 jenkins /bin/bash
+jenkins@f5238e77b8a1:/$
+=>get inside to jenkins here
+--------------------------------
 
 http://192.168.33.20:8080/jenkins
 
@@ -56,6 +75,9 @@ $ sudo docker stop docker-jenkins
 
 $ sudo docker run --name docker-jenkins -d -p 8080:8080 jenkins
 $ sudo docker run --name docker-jenkins-1 -d -p 8081:8080 jenkins
+
+http://192.168.33.20:8080/jenkins
+http://192.168.33.20:8081/jenkins
 ----------------------------------------
 
 
