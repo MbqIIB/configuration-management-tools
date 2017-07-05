@@ -1,0 +1,81 @@
+$ sudo docker images
+$ sudo docker rmi 123abcd456
+
+# running containers
+$ sudo docker ps
+
+# history of commands
+$ sudo docker ps -a
+
+# not running containers
+$ sudo docker ps -a -q
+
+$ sudo docker rm 123abcd456
+
+# remove all running containers
+$ sudo docker rm $(docker ps -a -q) --force
+
+$ sudo service docker status
+
+-------------------------------------
+$ sudo docker search hello-world
+$ sudo docker run hello-world
+
+-------------------------------------
+$ sudo docker search nginx
+$ sudo docker pull nginx
+
+$ sudo docker run --name docker-nginx -p 80:80 nginx
+=>it stays in prompt
+
+# detached mode
+$ sudo docker run --name docker-nginx -d -p 80:80 nginx 
+=>print container-id and it come out from prompt
+
+http://192.168.33.20
+
+$ sudo docker start docker-nginx
+$ sudo docker stop docker-nginx
+
+$ sudo docker rm docker-nginx
+---------------------------------------
+
+$ sudo docker search nginx
+$ sudo dokcer pull jenkins
+
+$ sudo docker run --name docker-jenkins -p 8080:8080 -p 50000:50000 jenkins
+=>it stays in prompt and write logs in console 
+
+$ sudo docker run --name docker-jenkins -d -p 8080:8080 -p 50000:50000 jenkins
+=>print container-id and it come out from prompt
+
+http://192.168.33.20:8080/jenkins
+
+$ sudo docker start docker-jenkins
+$ sudo docker stop docker-jenkins
+
+$ sudo docker run --name docker-jenkins -d -p 8080:8080 jenkins
+$ sudo docker run --name docker-jenkins-1 -d -p 8081:8080 jenkins
+----------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

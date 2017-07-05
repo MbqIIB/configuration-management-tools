@@ -34,22 +34,4 @@ $ sudo apt-get update
 $ sudo apt-get install docker-ce
 
 $ sudo docker --version
-$ sudo docker images
-$ sudo docker ps
-$ sudo docker ps -a
 
-$ sudo service docker status
-
-$ sudo docker search hello-world
-$ sudo docker run hello-world
-
-$ sudo docker search nginx
-$ sudo docker pull nginx
-$ sudo docker run --name docker-nginx -p 80:80 nginx
-http://192.168.33.10
-
-$ sudo docker rm docker-nginx
-
-$ sudo dokcer pull jenkins
-$ sudo docker run --name docker-jenkins -p 8080:8080 -p 50000:50000 jenkins
-http://192.168.33.10:8080/
