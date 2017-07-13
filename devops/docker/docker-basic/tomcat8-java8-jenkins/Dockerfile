@@ -1,7 +1,7 @@
 FROM tomcat:8.0-jre8
 MAINTAINER info@devops.com
 
-ADD http:// /usr/local/tomcat/webapps/jenkins.war
+ADD http://ftp.yz.yamagata-u.ac.jp/pub/misc/jenkins/war-stable/2.60.1/jenkins.war /usr/local/tomcat/webapps/jenkins.war
 
 EXPOSE 8080
 
