@@ -19,3 +19,8 @@ helloworld-app > docker images
 helloworld-app > docker run helloworld-app
 helloworld-app > docker run helloworld-app:1.0
 =>Hello World !!!
+
+docker tag image-name username/image-name
+docker push username/image-name
+
+  
