@@ -17,6 +17,8 @@ $ sudo docker rm $(docker ps -a -q) --force
 
 $ sudo service docker status
 
+$ sudo service docker start
+
 -------------------------------------
 $ sudo docker search hello-world
 $ sudo docker run hello-world
