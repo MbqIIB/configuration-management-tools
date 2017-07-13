@@ -21,6 +21,9 @@ $ sudo service docker status
 $ sudo docker search hello-world
 $ sudo docker run hello-world
 
+$ docker run ubuntu:14.04 /bin/echo 'It works!'
+It works!
+
 -------------------------------------
 $ sudo docker search nginx
 $ sudo docker pull nginx
