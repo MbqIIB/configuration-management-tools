@@ -1,0 +1,30 @@
+$ docker network ls
+
+$ docker run --detach infinite-loop-alpine
+$ docker ps --format="{{.ID}} {{.Names}}"
+$ docker network inspect bridge
+$ docker exec -it loving_roentgen ifconfig
+
+$ docker run --detach --net=none infinite-loop-alpine
+$ docker ps --format="{{.ID}} {{.Names}}"
+$ docker network inspect none
+$ docker exec -it adoring_kowalevski ifconfig
+
+$ docker run --detach --net=host infinite-loop-alpine
+$ docker ps --format="{{.ID}} {{.Names}}"
+$ docker network inspect host
+$ docker exec -it stupefied_meninsky ifconfig
+
+
+$ docker network create --driver bridge example-network-1
+$ docker network list
+$ docker network inspect example-network-1
+
+$ docker run --detach --name=infinite-loop-1 infinite-loop-alpine
+$ docker run --detach --name=infinite-loop-2 infinite-loop-alpine
+
+$ docker network connect example-network-1 infinite-loop-1 
+$ docker network connect example-network-1 infinite-loop-2 
+
+$ docker network inspect example-network-1 
+$ docker exec -it infinite-loop-1 ping -c 4 infinite-loop-2
