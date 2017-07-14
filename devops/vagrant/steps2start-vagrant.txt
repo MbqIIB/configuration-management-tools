@@ -1,3 +1,4 @@
+#create vagrant file or machine
 vagrant init bento/centos-7.2
 
 vagrant init minimal/centos7
@@ -5,11 +6,20 @@ vagrant init minimal/centos7
 vagrant init ubuntu/trusty64
 vagrant init ubuntu/xenial64
 
+#start vm
 vagrant up
+
+#login / ssh
 vagrant ssh
 
+#power off
 vagrant halt
+
+# remove vm
+vagrant destroy
+
+***** don't use below commands *******
 vagrant shutdown
 
 vagrant reload --provision
-
+**************************************

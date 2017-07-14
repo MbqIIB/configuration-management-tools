@@ -1,6 +1,6 @@
 https://kubernetes.io/docs/setup/independent/install-kubeadm/
 
-> sudo apt-get -f install
+> ########### sudo apt-get -f install
 
 > apt-get update && apt-get install -y apt-transport-https
 
