@@ -1,0 +1,25 @@
+$ docker-machine create --driver virtualbox docker-swarm-manager
+
+$ docker-machine start docker-swarm-manager
+$ docker-machine ssh docker-swarm-manager
+$ docker swarm init --advertise-addr 192.168.99.100
+
+$ docker swarm join --token SWMTKN-1-1k0yuvvfpsid27slhn5of2ue0xjq91kqcb2qp81idyvt7amj5j-7t5fada5fqxw3wv3fk0cihoji 192.168.99.100:2377
+
+$ docker info
+$ docker node ls
+$ docker node inspect --pretty hariharan-docker-swarm-worker-node-2
+
+$ docker service create --replicas 1 --name infinite-loop enhariharan/infinite-loop
+$ docker service ls
+$ docker service inspect --pretty infinite-loop
+$ docker service ps infinite-loop
+
+$ docker service scale infinite-loop=10
+$ docker service ps infinite-loop
+
+$ docker service rm infinite-loop
+
+$ docker service ls
+
+$ docker ps
