@@ -16,8 +16,15 @@ EOF
 # this command will run as normal 'ubuntu' user not at 'root' user.
 # and it applies only for master not for minios-nodes machines, I mean below all commands
 # run on only at master
-> kubeadm init 
+> sudo kubeadm init 
 
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+  # this will be run at minios/node as 'root'
+  kubeadm join --token 8379fa.ae9bce3e239e03c7 172.31.14.83:6443
+  
 > kubectl get nodes
 
 > kubectl get pods --all-namespaces
