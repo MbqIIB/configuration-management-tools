@@ -6,7 +6,7 @@ kubectl get pods
 
 kubectl describe pods
 
-kubectl delete pod hello-pod
+kubectl delete pod ngx-pod
 
 kubectl apply -f pod.yml
 ------------------------------
@@ -19,6 +19,19 @@ kubectl get rc
 
 kubectl describe rc
 
-kubectl delete rc hello-rc
+kubectl delete rc ngx-rc
+
+------------------------------
+kubectl describe pods | grep app
+
+kubectl get svc
+
+kubectl create -f svc.yml
+
+kubectl get svc ngx-svc
+
+kubectl describe svc ngx-svc
+
+kubectl delete svc ngx-svc
 
 ------------------------------

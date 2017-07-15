@@ -1,7 +1,7 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: jenkins-deploy
+  name: jenkins
 spec:
   replicas: 2
   minReadySeconds: 10
@@ -14,9 +14,11 @@ spec:
     metadata:
       labels:
         app: jenkins
+        version: 2.7.1
     spec:
       containers:
       - name: jenkins-pod
-        image: jenkins
+        image: jenkins:2.7.1
         ports:
         - containerPort: 8080
+          protocol: TCP
