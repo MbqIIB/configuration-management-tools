@@ -1,7 +1,7 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: ngx-deploy
+  name: jenkins-deploy
 spec:
   replicas: 2
   minReadySeconds: 10
@@ -13,10 +13,10 @@ spec:
   template:
     metadata:
       labels:
-        app: nginx
+        app: jenkins
     spec:
       containers:
-      - name: ngx-pod
-        image: nginx
+      - name: jenkins-pod
+        image: jenkins
         ports:
         - containerPort: 8080

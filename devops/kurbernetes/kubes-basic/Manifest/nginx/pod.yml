@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: hello-pod
+  name: ngx-pod
 spec:
   containers:
-  - name: first-container
+  - name: ngx-cntr
     image: nginx
     ports:
     - containerPort: 80

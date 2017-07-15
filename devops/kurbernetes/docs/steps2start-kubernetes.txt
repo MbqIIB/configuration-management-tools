@@ -8,6 +8,7 @@ kubectl describe pods
 
 kubectl delete pod hello-pod
 
+kubectl apply -f pod.yml
 ------------------------------
 
 kubectl get rc
