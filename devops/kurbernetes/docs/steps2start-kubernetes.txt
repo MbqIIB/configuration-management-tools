@@ -1,0 +1,23 @@
+kubectl get pods
+
+kubectl create -f pod.yml
+
+kubectl get pods
+
+kubectl describe pods
+
+kubectl delete pod hello-pod
+
+------------------------------
+
+kubectl get rc
+
+kubectl create -f rc.yml
+
+kubectl get rc
+
+kubectl describe rc
+
+kubectl delete rc hello-rc
+
+------------------------------
