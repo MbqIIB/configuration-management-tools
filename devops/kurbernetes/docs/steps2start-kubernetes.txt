@@ -34,4 +34,15 @@ kubectl describe svc ngx-svc
 
 kubectl delete svc ngx-svc
 
+=> access from the browser using Master public url
 ------------------------------
+
+
+kubectl apply -f jenkins-deploy.yml --record
+kubectl rollout status deployments jenkins-deploy
+kubectl get deploy jenkins-deploy
+kubectl rollout history deployments jenkins-deploy
+
+kubectl describe deploy jenkins-deploy
+kubectl rollout undo deployment jenkins-deploy --to-revision=1
+kubectl rollout status deployments jenkins-deploy
