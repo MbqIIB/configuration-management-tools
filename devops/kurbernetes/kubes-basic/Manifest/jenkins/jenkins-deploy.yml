@@ -14,11 +14,13 @@ spec:
     metadata:
       labels:
         app: jenkins
-        version: 2.7.1
+        #version: 2.7.1
+        version: 1.642.4
     spec:
       containers:
       - name: jenkins-pod
-        image: jenkins:2.7.1
+        #image: jenkins:2.7.1
+        image: jenkins:1.642.4
         ports:
         - containerPort: 8080
           protocol: TCP

@@ -12,4 +12,5 @@ spec:
     protocol: TCP
   selector:
     app: jenkins
-    version: 2.7.1
+    #version: 2.7.1
+    version: 1.642.4
