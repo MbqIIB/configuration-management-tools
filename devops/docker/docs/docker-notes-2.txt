@@ -26,5 +26,7 @@ docker push username/image-name
 docker tag helloworld-app:1.0 santosh32/helloworld-app:latest
 docker push santosh32/helloworld-app:latest
 
+docker login 
+
 docker tag helloworld-app santosh32/helloworld-app
 docker push santosh32/helloworld-app
