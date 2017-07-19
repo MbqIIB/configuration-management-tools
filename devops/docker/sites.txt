@@ -5,3 +5,9 @@ https://rominirani.com/docker-swarm-tutorial-b67470cf8872
 https://github.com/arun-gupta/docker-for-java
 
 https://prakhar.me/docker-curriculum/
+
+http://containertutorials.com/get_started_kubernetes/k8s_example.html
+
+http://training.play-with-docker.com
+
+
