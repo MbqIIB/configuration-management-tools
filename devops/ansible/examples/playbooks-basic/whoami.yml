@@ -1,0 +1,8 @@
+---
+- hosts: all
+  tasks:
+  - name: this task will ping
+    command: whoami
+    
+# ansible > ansible all -m whoami
+# ansible > ansible-playbook whoami.yml

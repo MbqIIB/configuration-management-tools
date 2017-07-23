@@ -100,12 +100,15 @@ passwd:
 
 ansible@ > vi hosts
 localhost
+ip-172-31-15-143.us-west-2.compute.internal
 <<ansible node public DNS name/ if it aws private DNS name also works>>
 
 ansible > ssh-copy-id <<ansible node public DNS name>>
+ansible > ssh-copy-id ip-172-31-15-143.us-west-2.compute.internal
 ==>password
 
-ansible > ssh <<ansible node public DNS name>>
+ansible > ssh <<ansible node public DNS name>> 
+ansible > ssh ip-172-31-15-143.us-west-2.compute.internal
 => login successfull
 ansible > exit
 
