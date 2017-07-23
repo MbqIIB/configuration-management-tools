@@ -1,0 +1,4 @@
+- hosts: all
+  tasks:
+  - name: this task will ping
+    ping: null
