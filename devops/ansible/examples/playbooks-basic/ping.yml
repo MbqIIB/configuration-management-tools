@@ -2,3 +2,5 @@
   tasks:
   - name: this task will ping
     ping: null
+    
+# ansible > ansible all -m ping
