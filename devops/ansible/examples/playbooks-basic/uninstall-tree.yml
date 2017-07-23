@@ -1,5 +1,6 @@
 ---
 - hosts: all
+  become: yes
   tasks:
   - name: Uninstall tree which was installed via ad-hoc command
     yum: 
