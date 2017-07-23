@@ -1,4 +1,5 @@
 Ansible Master/ Ansible Controller
 ---------------------------------
+ansible @ > ansible -i 
 ansible @ > ansible-playbook hello.yml
 
