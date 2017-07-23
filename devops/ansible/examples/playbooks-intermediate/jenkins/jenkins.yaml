@@ -19,3 +19,6 @@
       name: tomcat
       state: started
       enabled: true
+
+# ansible > ansible-playbook -i jenkins-host jenkins.yaml
+# http://ec2-34-223-250-108.us-west-2.compute.amazonaws.com:8080/jenkins
