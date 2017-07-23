@@ -1,0 +1,10 @@
+---
+- hosts: all
+  tasks:
+  - name: Uninstall tree which was installed via ad-hoc command
+    yum: 
+      name: tree
+      state: absent
+    
+# ansible all -b -m command -a "yum install tree -y"
+# ansible-playbook uninstall-tree.yml
