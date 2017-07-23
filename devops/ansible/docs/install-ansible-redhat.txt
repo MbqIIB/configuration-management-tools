@@ -21,7 +21,125 @@ Here is the steps for ansible controller :
 > yum install ansible -y
 
 > ansible --version
---------------------
+---
+root > adduser ansible
+root > passwd ansible
+password: ansible
+
+
+root > visudo
+	root ALL = (ALL) ALL
+	ansible ALL = (ALL) NOPASSWD: ALL
+
+root > vi /etc/ssh/sshd-config
+PasswordAuthentication yes
+#PasswordAuthenticatin no
+
+root > service sshd restart
+root > exit
+
+root > su ansible
+passwd:
+
+ansible@ec2-user > pwd
+ansible@ec2-user > cd /etc/ansible
+ansible@ec2-user > ls
+ansible.config roles hosts 
+
+ansible@ec2-user > sudo -i
+root > cd /etc/ansible
+root@ etc/ansible > mv hosts hosts.orig
+root@ > vi hosts
+localhost
+
+root> ansible -m ping all
+Unreachable
+
+Switch User
+
+root> su ansible
+ansible > ansible -m ping all
+Unreachable
+
+ansible > ssh-keygen
+empty pharse for passwords
+
+ansible > ssh-copy-id localhost
+==>password
+
+ansible > ssh localhost
+=> login successfull
+ansible > exit
+
+ansible > ansible -m ping all
+
+----------------------------
+ansible setup in Node machines :
+
+root > adduser ansible
+root > passwd ansible
+password: ansible
+
+
+root > visudo
+	root ALL = (ALL) ALL
+	ansible ALL = (ALL) NOPASSWD: ALL
+
+root > vi /etc/ssh/sshd-config
+PasswordAuthentication yes
+#PasswordAuthenticatin no
+
+root > service sshd restart
+root > exit
+
+---------------------------
+GOTO Master/ansible controller:
+
+root > su ansible
+passwd:
+
+ansible@ > vi hosts
+localhost
+<<ansible node public DNS name/ if it aws private DNS name also works>>
+
+ansible > ssh-copy-id <<ansible node public DNS name>>
+==>password
+
+ansible > ssh <<ansible node public DNS name>>
+=> login successfull
+ansible > exit
+
+ansible > ansible -m ping all
+-------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
 
 
 
