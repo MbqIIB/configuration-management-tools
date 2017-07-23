@@ -1,7 +1,8 @@
+---
 - hosts: all
   tasks:
   - name: this task will ping
-    ping: null
+    ping: 
     
 # ansible > ansible all -m ping
 # ansible > ansible-playbook ping.yml
