@@ -4,3 +4,4 @@
     ping: null
     
 # ansible > ansible all -m ping
+# ansible > ansible-playbook ping.yml
