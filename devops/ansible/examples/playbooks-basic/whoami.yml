@@ -1,8 +1,10 @@
 ---
 - hosts: all
   tasks:
-  - name: this task will ping
+  - name: this task will command execution
     command: whoami
+  - name: find current directory
+    command: pwd
     
 # ansible > ansible all -m whoami
 # ansible > ansible-playbook whoami.yml
