@@ -3,6 +3,9 @@
   tasks:
   - name: this task will ping
     ping: 
+  - name: Excecuting Debug task
+    debug:
+      msg: "{{ansible_all_ipv4_addresses}}"
     
 # ansible > ansible all -m ping
 # ansible > ansible-playbook ping.yml
