@@ -1,0 +1,8 @@
+python --version
+apt-get -y install python-pip
+pip install awscli
+
+complete -C '/usr/local/bin/aws_completer' aws
+pip install aws-shell
+
+aws configure

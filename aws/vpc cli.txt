@@ -1,0 +1,134 @@
+aws ec2 create-vpc --cidr-block 10.0.0.0/16
+{
+    "Vpc": {
+        "VpcId": "vpc-6815c80e",
+        "InstanceTenancy": "default",
+        "Tags": [],
+        "Ipv6CidrBlockAssociationSet": [],
+        "State": "pending",
+        "DhcpOptionsId": "dopt-fd6e229a",
+        "CidrBlock": "10.0.0.0/16",
+        "IsDefault": false
+    }
+}
+
+aws ec2 create-subnet --vpc-id vpc-6815c80e --cidr-block 10.0.1.0/24
+{
+    "Subnet": {
+        "AvailabilityZone": "us-west-2c",
+        "AvailableIpAddressCount": 251,
+        "DefaultForAz": false,
+        "Ipv6CidrBlockAssociationSet": [],
+        "VpcId": "vpc-6815c80e",
+        "State": "pending",
+        "MapPublicIpOnLaunch": false,
+        "SubnetId": "subnet-a76aedfc",
+        "CidrBlock": "10.0.1.0/24",
+        "AssignIpv6AddressOnCreation": false
+    }
+}
+aws ec2 create-subnet --vpc-id vpc-6815c80e --cidr-block 10.0.0.0/24
+{
+    "Subnet": {
+        "AvailabilityZone": "us-west-2c",
+        "AvailableIpAddressCount": 251,
+        "DefaultForAz": false,
+        "Ipv6CidrBlockAssociationSet": [],
+        "VpcId": "vpc-6815c80e",
+        "State": "pending",
+        "MapPublicIpOnLaunch": false,
+        "SubnetId": "subnet-c677f09d",
+        "CidrBlock": "10.0.0.0/24",
+        "AssignIpv6AddressOnCreation": false
+    }
+}
+aws ec2 create-internet-gateway
+{
+    "InternetGateway": {
+        "Tags": [],
+        "Attachments": [],
+        "InternetGatewayId": "igw-1e199579"
+    }
+}
+
+aws ec2 attach-internet-gateway --vpc-id vpc-6815c80e --internet-gateway-id igw-1e199579
+
+aws ec2 create-route-table --vpc-id vpc-6815c80e
+{
+    "RouteTable": {
+        "Associations": [],
+        "RouteTableId": "rtb-01a38067",
+        "VpcId": "vpc-6815c80e",
+        "PropagatingVgws": [],
+        "Tags": [],
+        "Routes": [
+            {
+                "GatewayId": "local",
+                "DestinationCidrBlock": "10.0.0.0/16",
+                "State": "active",
+                "Origin": "CreateRouteTable"
+            }
+        ]
+    }
+}
+
+aws ec2 create-route --route-table-id rtb-01a38067 --destination-cidr-block 0.0.0.0/0 --gateway-id igw-1e199579
+{
+    "Return": true
+}
+
+aws ec2 describe-route-tables --route-table-id rtb-01a38067
+{
+    "RouteTables": [
+        {
+            "Associations": [],
+            "RouteTableId": "rtb-01a38067",
+            "VpcId": "vpc-6815c80e",
+            "PropagatingVgws": [],
+            "Tags": [],
+            "Routes": [
+                {
+                    "GatewayId": "local",
+                    "DestinationCidrBlock": "10.0.0.0/16",
+                    "State": "active",
+                    "Origin": "CreateRouteTable"
+                },
+                {
+                    "GatewayId": "igw-1e199579",
+                    "DestinationCidrBlock": "0.0.0.0/0",
+                    "State": "active",
+                    "Origin": "CreateRoute"
+                }
+            ]
+        }
+    ]
+}
+
+aws ec2 describe-subnets --filters "Name=vpc-id,Values=vpc-6815c80e" --query 'Subnets[*].{ID:SubnetId,CIDR:CidrBlock}'
+[
+    {
+        "CIDR": "10.0.0.0/24",
+        "ID": "subnet-c677f09d"
+    },
+    {
+        "CIDR": "10.0.1.0/24",
+        "ID": "subnet-a76aedfc"
+    }
+]
+
+aws ec2 associate-route-table  --subnet-id subnet-c677f09d --route-table-id rtb-01a38067
+
+Clean UP -
+aws ec2 delete-subnet --subnet-id subnet-c677f09d
+aws ec2 delete-subnet --subnet-id subnet-a76aedfc
+aws ec2 delete-route-table --route-table-id rtb-01a38067
+aws ec2 detach-internet-gateway --internet-gateway-id igw-1e199579 --vpc-id vpc-6815c80e
+aws ec2 delete-internet-gateway --internet-gateway-id igw-1e199579
+aws ec2 delete-vpc --vpc-id vpc-6815c80e
+
+
+
+
+
+
+
