@@ -13,5 +13,5 @@
       state: started
       enabled: true
        
-# ansible > ansible-playbook -i common-hosts webserver-switch.yml
+# ansible > ansible-playbook -b -i common-hosts webserver-switch.yml
 # http://ip-172-31-15-143.us-west-2.compute.internal:80
