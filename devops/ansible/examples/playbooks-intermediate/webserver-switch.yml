@@ -4,8 +4,18 @@
   become: yes
   tasks:
   - name: Install web server
+    yum:
+      name: "{{webserver_package}}"
+      state: present
+  - name: Ensure webserver service is runnning
+    service:
+      name: "{{webserver_package}}"
+      state: started
+      enabled: true
+       
+  - name: debug web server
     debug:
       msg: "{{webserver_package}}"
-       
+      
 # ansible > ansible-playbook -b -i common-hosts webserver-switch.yml
 # http://ip-172-31-15-143.us-west-2.compute.internal:80
