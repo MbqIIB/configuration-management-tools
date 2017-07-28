@@ -1,5 +1,6 @@
+---
 - hosts: local
-  become: true
+  become: yes
   tasks:
     debug:
       msg: "{{webserver_package}}"
