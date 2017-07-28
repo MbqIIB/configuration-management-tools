@@ -1,12 +1,5 @@
----
-#- hosts: webserver
 - hosts: local
-  become: yes
+  become: true
   tasks:
-  - name: Install web server
     debug:
       msg: "{{webserver_package}}"
-     
-       
-# ansible > ansible-playbook -b -i common-hosts webserver-switch.yml
-# http://ip-172-31-15-143.us-west-2.compute.internal:80
