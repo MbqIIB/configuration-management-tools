@@ -1,15 +1,15 @@
 ---
-- hosts: webserver
-- hosts: localhost
+#- hosts: webserver
+- hosts: local
   become: yes
   tasks:
   - name: Install web server
     yum:
-      name: {{webserver_package}}
+      name: httpd
       state: present
   - name: Ensure webserver service is runnning
     service:
-      name: {{webserver_package}}
+      name: httpd
       state: started
       enabled: true
        
