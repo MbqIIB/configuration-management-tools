@@ -1,6 +1,17 @@
 ---
-- hosts: local
+- hosts: webserver
+- hosts: localhost
   become: yes
   tasks:
-    debug:
-      msg: "{{webserver_package}}"
+  - name: Install web server
+    yum:
+      name: {{webserver_package}}
+      state: present
+  - name: Ensure webserver service is runnning
+    service:
+      name: {{webserver_package}}
+      state: started
+      enabled: true
+       
+# ansible > ansible-playbook -i common-hosts webserver-switch.yml
+# http://ip-172-31-15-143.us-west-2.compute.internal:80
