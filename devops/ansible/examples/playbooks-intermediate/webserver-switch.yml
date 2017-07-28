@@ -7,6 +7,7 @@
     yum:
       name: "{{webserver_package}}"
       state: present
+
   - name: Ensure webserver service is runnning
     service:
       name: "{{webserver_package}}"
