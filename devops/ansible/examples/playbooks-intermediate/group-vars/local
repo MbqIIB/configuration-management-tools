@@ -1,2 +1,2 @@
 ---
-webserver_package: 'httpd' 
+webserver_package: httpd
