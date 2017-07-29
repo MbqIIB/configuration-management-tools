@@ -3,15 +3,15 @@
 - hosts: localhost
   become: true
   tasks:
-  - name: install openjdk 8
+  - name: install openjdk-8
     yum:
       name: java-1.8.0-openjdk.x86_64
       state: present
-  - name: install tomcat 7
+  - name: install tomca-7
     yum:
       name: tomcat
       state: present
-  - name: download jenkins to webapps folder
+  - name: download jenkins.war to webapps folder
     get_url:
       url: http://ftp.yz.yamagata-u.ac.jp/pub/misc/jenkins/war-stable/2.60.2/jenkins.war
       dest: /usr/share/tomcat/webapps/jenkins.war
@@ -21,5 +21,5 @@
       state: started
       enabled: true
 
-# ansible > ansible-playbook -i common-hosts tomcat-java-jenkins.yml
+# ansible > ansible-playbook -b -i common-hosts tomcat-java-jenkins.yml
 # http://ec2-34-223-250-108.us-west-2.compute.amazonaws.com:8080/jenkins

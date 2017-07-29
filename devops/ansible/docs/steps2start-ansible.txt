@@ -1,5 +1,14 @@
 Ansible Master/ Ansible Controller
 ---------------------------------
-ansible @ > ansible -i 
+ansible @ > ansible -m ping all
+ansible @ > ansible all -m ping
+
+ansible @ > ansible all -m command -a "whoami"
+ansible @ > ansible all -m command -a "pwd"
+ 
 ansible @ > ansible-playbook hello.yml
+
+ansible @ > ansible all -b -m command -a "yum install tree -y"
+
+ansible @ > ansible-playbook -b -i common-hosts tomcat-java-jenkins.yml
 

@@ -1,0 +1,9 @@
+---
+- hosts: all
+  tasks:
+  - name: execute whoami command
+    command: whoami
+  - name: execute pwd command
+    command: pwd
+    
+# ansible > ansible-playbook command.yml

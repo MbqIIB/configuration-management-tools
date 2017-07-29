@@ -1,7 +1,7 @@
 ---
 - hosts: all
   tasks:
-  - name: this task will ping
+  - name: Excecuting ping task
     ping: 
   - name: Excecuting Debug task
     debug:
