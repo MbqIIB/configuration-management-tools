@@ -1,0 +1,788 @@
+Docker Swarm: Getting Started with a 3 Node Docker Swarm Cluster with a Scalable App
+13 JULY 2017 on Docker, Clustering, Python, Swarm, MicroServices
+
+
+What are we up to today?
+
+Install Docker and Docker Compose on 3 Nodes
+Initialize the Swarm and Join the Worker Nodes
+Create a Nginx Service with 2 Replicas
+Do some Inspection: View some info on the Service
+Demo: Create a Registry, Flask App with Python that Reports the Hostname, Scale the App, Change the Code, Update the Service, etc.
+For detailed information on Docker Swarm, have a look at their Docker's Documentation.
+
+Getting Started:
+
+Bootstrap Docker Swarm Setup with Docker Compose on Ubuntu 16.04:
+
+Installing Docker:
+
+Run the following on all 3 Nodes as the root user:
+
+$ apt-get update && apt-get upgrade -y
+$ apt-get remove docker docker-engine -y
+$ apt-get install apt-transport-https ca-certificates curl gnupg2 software-properties-common -y
+
+$ curl -fsSL https://download.docker.com/linux/debian/gpg | sudo $ apt-key add -
+add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
+
+$ apt-get update
+$ apt-get install docker-ce -y
+$ systemctl enable docker
+$ systemctl restart docker
+
+$ curl -L https://github.com/docker/compose/releases/download/1.13.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+$ chmod +x /usr/local/bin/docker-compose
+$ usermod -aG docker <your-user>
+Testing:
+
+Test Docker by running a Test Container
+
+$ docker --version
+$ docker-compose --version
+$ docker run hello-world
+In this example I do not rely on DNS, and for simplicity, I just added the host entry data into the /etc/hosts files on each node:
+
+$ cat /etc/hosts
+172.31.18.90    manager  
+172.31.20.94    worker-1  
+172.31.21.50    worker-2  
+Initialize the Swarm:
+
+Now we will initialize the swarm on the manager node and as we have more than one network interface, we will specify the --advertise-addr option:
+
+[manager] $ docker swarm init --advertise-addr 172.31.18.90
+Swarm initialized: current node (siqyf3yricsvjkzvej00a9b8h) is now a manager.
+
+To add a worker to this swarm, run the following command:
+
+    docker swarm join \
+    --token SWMTKN-1-0eith07xkcg93lzftuhjmxaxwfa6mbkjsmjzb3d3sx9cobc2zp-97s6xzdt27y2gk3kpm0cgo6y2 \
+    172.31.18.90:2377
+
+To add a manager to this swarm, run 'docker swarm join-token manager' and follow the instructions.  
+If this is a scenario where we would like to add more than one manager, we would need to run the above command to add more managers.
+
+Join the Worker nodes to the Manager:
+
+Now, to join the worker nodes to the swarm, we will run the docker swarm join command that we received in the swarm initialisation step, like below:
+
+[worker-1] $ docker swarm join --token SWMTKN-1-0eith07xkcg93lzftuhjmxaxwfa6mbkjsmjzb3d3sx9cobc2zp-97s6xzdt27y2gk3kpm0cgo6y2 172.31.18.90:2377
+This node joined a swarm as a worker.  
+And to join the second worker to the swarm:
+
+[worker-2] $ docker swarm join --token SWMTKN-1-0eith07xkcg93lzftuhjmxaxwfa6mbkjsmjzb3d3sx9cobc2zp-97s6xzdt27y2gk3kpm0cgo6y2 172.31.18.90:2377
+This node joined a swarm as a worker.  
+To see the node status, so that we can determine if the nodes are active/available etc, from the manager node, list all the nodes in the swarm:
+
+[manager] $ docker node ls
+ID                           HOSTNAME  STATUS  AVAILABILITY  MANAGER STATUS  
+j14mte3v1jhtbm3pb2qrpgwp6    worker-1  Ready   Active  
+siqyf3yricsvjkzvej00a9b8h *  master    Ready   Active        Leader  
+srl5yzme5hxnzxal2t1efmwje    worker-2  Ready   Active  
+If at any time, you lost your join token, it can be retrieved by running the following for the manager token:
+
+$ docker swarm join-token manager -q
+SWMTKN-1-67chzvi4epx28ii18gizcia8idfar5hokojz660igeavnrltf0-09ijujbnnh4v960b8xel58pmj  
+And the following to retrieve the worker token:
+
+$ docker swarm join-token worker -q
+SWMTKN-1-67chzvi4epx28ii18gizcia8idfar5hokojz660igeavnrltf0-acs21nn28v17uwhw0oqg5ibwx  
+At this moment, we will see that we have no services running in our swarm:
+
+[manager] $ docker service ls
+ID  NAME  MODE  REPLICAS  IMAGE  
+Deploying our First Service:
+
+Let's create a nginx service with 2 replicas, which means that there will be 2 containers of nginx running in our swarm.
+
+If any of these containers fail, they will be spawned again to have the desired number that we set on the replica option:
+
+[manager] $ docker service create --name my-web --publish 8080:80 --replicas 2 nginx
+Let's have a look at our nginx service:
+
+[manager] $ docker service ls
+ID            NAME    MODE        REPLICAS  IMAGE  
+1okycpshfusq  my-web  replicated  2/2       nginx:latest  
+After we see that the replica count is 2/2 our service is ready.
+
+To see on what nodes our containers are running that makes up our service:
+
+[manager] $ docker service ps my-web
+ID            NAME      IMAGE         NODE      DESIRED STATE  CURRENT STATE           ERROR  PORTS  
+k0qqrh8s0c2d  my-web.1  nginx:latest  worker-1  Running        Running 30 seconds ago  
+nku9wer6tmll  my-web.2  nginx:latest  worker-2  Running        Running 30 seconds ago  
+We can also retrieve more information of our service by using the inspect option:
+
+[manager] $ docker service inspect my-web
+[
+    {
+        "ID": "1okycpshfusqos8023gtvdf11",
+        "Version": {
+            "Index": 22
+        },
+        "CreatedAt": "2017-06-21T07:58:15.177547236Z",
+        "UpdatedAt": "2017-06-21T07:58:15.178864919Z",
+        "Spec": {
+            "Name": "my-web",
+            "TaskTemplate": {
+                "ContainerSpec": {
+                    "Image": "nginx:latest@sha256:41ad9967ea448d7c2b203c699b429abe1ed5af331cd92533900c6d77490e0268",
+                    "DNSConfig": {}
+                },
+                "Resources": {
+                    "Limits": {},
+                    "Reservations": {}
+                },
+                "RestartPolicy": {
+                    "Condition": "any",
+                    "MaxAttempts": 0
+                },
+                "Placement": {},
+                "ForceUpdate": 0
+            },
+            "Mode": {
+                "Replicated": {
+                    "Replicas": 2
+                }
+            },
+            "UpdateConfig": {
+                "Parallelism": 1,
+                "FailureAction": "pause",
+                "MaxFailureRatio": 0
+            },
+            "EndpointSpec": {
+                "Mode": "vip",
+                "Ports": [
+                    {
+                        "Protocol": "tcp",
+                        "TargetPort": 80,
+                        "PublishedPort": 8080,
+                        "PublishMode": "ingress"
+                    }
+                ]
+            }
+        },
+        "Endpoint": {
+            "Spec": {
+                "Mode": "vip",
+                "Ports": [
+                    {
+                        "Protocol": "tcp",
+                        "TargetPort": 80,
+                        "PublishedPort": 8080,
+                        "PublishMode": "ingress"
+                    }
+                ]
+            },
+            "Ports": [
+                {
+                    "Protocol": "tcp",
+                    "TargetPort": 80,
+                    "PublishedPort": 8080,
+                    "PublishMode": "ingress"
+                }
+            ],
+            "VirtualIPs": [
+                {
+                    "NetworkID": "wvim41tbf7tsmi7z49g56bisa",
+                    "Addr": "10.255.0.6/16"
+                }
+            ]
+        },
+        "UpdateStatus": {
+            "StartedAt": "0001-01-01T00:00:00Z",
+            "CompletedAt": "0001-01-01T00:00:00Z"
+        }
+    }
+]
+We can get the Endpoint Port info by using inspect and using the --format parameter to filter the output:
+
+[manager] $ docker service inspect --format="{{json .Endpoint.Ports}}" my-web  | python -m json.tool
+From the output we will find the PublishedPort is the Port that we Expose, which will be the listener. Our TargetPort will be the port that is listening on the container:
+
+[
+    {
+        "Protocol": "tcp",
+        "PublishMode": "ingress",
+        "PublishedPort": 8080,
+        "TargetPort": 80
+    }
+]
+To get the Virtual IP Info:
+
+[manager] $ docker service inspect --format="{{json .Endpoint.VirtualIPs}}" my-web  | python -m json.tool
+[
+    {
+        "Addr": "10.255.0.6/16",
+        "NetworkID": "wvim41tbf7tsmi7z49g56bisa"
+    }
+]
+To only get the Published Port:
+
+[manager] $ docker service inspect --format="{{range .Endpoint.Ports}}{{.PublishedPort}}{{end}}" my-web
+8080  
+We can also list our networks:
+
+[manager] $ docker network ls
+NETWORK ID          NAME                DRIVER              SCOPE  
+1cb24ee7e385        bridge              bridge              local  
+503b2f0eda49        docker_gwbridge     bridge              local  
+fe679d82d502        host                host                local  
+wvim41tbf7ts        ingress             overlay             swarm  
+310b9219ec0c        none                null                local  
+And also inspecting our network for more information:
+
+[manager] $ docker network inspect ingress
+[
+    {
+        "Name": "ingress",
+        "Id": "wvim41tbf7tsmi7z49g56bisa",
+        "Created": "2017-06-21T07:50:44.14232108Z",
+        "Scope": "swarm",
+        "Driver": "overlay",
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": null,
+            "Config": [
+                {
+                    "Subnet": "10.255.0.0/16",
+                    "Gateway": "10.255.0.1"
+                }
+            ]
+        },
+        "Internal": false,
+        "Attachable": false,
+        "Containers": {
+            "ingress-sbox": {
+                "Name": "ingress-endpoint",
+                "EndpointID": "b6b2a8f3f233cfc77806718a9c47daf02ad128ba81c96d6382ff1d3799c3b5c1",
+                "MacAddress": "02:42:0a:ff:00:03",
+                "IPv4Address": "10.255.0.3/16",
+                "IPv6Address": ""
+            }
+        },
+        "Options": {
+            "com.docker.network.driver.overlay.vxlanid_list": "4096"
+        },
+        "Labels": {},
+        "Peers": [
+            {
+                "Name": "master-59041a33bebc",
+                "IP": "172.31.18.90"
+            },
+            {
+                "Name": "worker-1-cfee817ddb5f",
+                "IP": "172.31.20.94"
+            },
+            {
+                "Name": "worker-2-40891fb1fa3f",
+                "IP": "172.31.21.50"
+            }
+        ]
+    }
+]
+To get the IP of container in a swarm cluster:
+
+[manager] $ docker service ps my-web
+ID            NAME      IMAGE         NODE      DESIRED STATE  CURRENT STATE           ERROR  PORTS  
+k0qqrh8s0c2d  my-web.1  nginx:latest  worker-1  Running        Running 31 minutes ago  
+nku9wer6tmll  my-web.2  nginx:latest  worker-2  Running        Running 31 minutes ago  
+For example, we would like to determine the IP for our my-web.1 nginx service on worker-1:
+
+[worker-1] $ docker ps
+CONTAINER ID        IMAGE                                                                           COMMAND                  CREATED             STATUS              PORTS               NAMES  
+72e05af4e654  
+Then inspect the container to get the IP Address:
+
+[worker-1] $ docker inspect 72e05af4e654 --format "{{json .NetworkSettings.Networks.ingress.IPAddress}}"
+"10.255.0.8"
+or:
+
+[worker-1] $ docker inspect 72e05af4e654 --format "{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}"
+10.255.0.8  
+Creating the Demo Web Application Service Example
+
+In this example, we will create a Python Flask Example that prints out the hostname of the container (containerid) and also prints a UUID.
+
+So when we scale the service we can see that the round-robin load balancing algorithm, reports a different hostname on each HTTP Request.
+
+Creating a Private Registry to Save our Images:
+
+We will deploy a private registry server as a service into our swarm that will act as a private registry that will host our images that we will be pushing to:
+
+[manager] $ docker service create --name registry --publish "5000:5000" registry:2
+Create a Network:
+
+We will create a network, which will use the overlay driver which spans multiple docker hosts, that makes up the overlay network and specify the subnet of choice:
+
+[manager] $ docker network create --driver overlay --subnet 10.24.90.0/24 mynet
+Now that our network is created, let's inspect the network to determine the detail under the hood:
+
+$ docker network inspect mynet
+[
+    {
+        "Name": "mynet",
+        "Id": "byzlzl4r2mwv4j9jisu7ellhs",
+        "Created": "0001-01-01T00:00:00Z",
+        "Scope": "swarm",
+        "Driver": "overlay",
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": null,
+            "Config": [
+                {
+                    "Subnet": "10.24.90.0/24",
+                    "Gateway": "10.24.90.1"
+                }
+            ]
+        },
+        "Internal": false,
+        "Attachable": false,
+        "Containers": null,
+        "Options": {
+            "com.docker.network.driver.overlay.vxlanid_list": "4103"
+        },
+        "Labels": null
+    }
+]
+Also, when service is associated with this network, in terms of dns resolution, the service name will respond to the virtual ip (vip) of the service.
+
+Create the Local Directory, Code, Dockerfile and docker-compose config:
+
+Create the Directory where our Code will be Stored Locally:
+
+$ mkdir flask-demo
+$ cd flask-demo
+Set the Python Dependency in the requirements.txt file:
+
+$ cat requirements.txt
+flask  
+Creating a Python Flask App (app.py) to Show the Container Name and Random uuid String:
+
+$ cat app.py
+from flask import Flask  
+import os  
+import uuid
+
+app = Flask(__name__)
+
+@app.route('/')
+def index():  
+    hostname = os.uname()[1]
+    randomid = uuid.uuid4()
+    return 'Container Hostname: ' + hostname + ' , ' + 'UUID: ' + str(randomid)
+
+if __name__ == '__main__':  
+    app.run(host='0.0.0.0', port=5098)
+Create the Dockerfile that will act as our instruction on how to build our image:
+
+$ cat Dockerfile
+FROM python:3.4-alpine  
+ADD . /app  
+WORKDIR /app  
+RUN pip install -r requirements.txt  
+CMD ["python", "app.py"]  
+Create the Docker Compose file, that will build our image using our Dockerfile, specifying the exposed ports, the image registry and we will also specify to use our existing mynet network:
+
+$ cat docker-compose.yml
+version: '3'
+
+services:  
+  web:
+    image: master:5000/flask-app
+    build: .
+    ports:
+      - "80:5098"
+
+networks:  
+  default:
+    external:
+      name: mynet
+Testing locally on the host:
+
+$ docker-compose up
+ # do some testing
+$ docker-compose down
+Build the Image, the push to the private registry that is specified in the docker-compose.yml file:
+
+$ docker-compose build
+$ docker-compose push
+Pushing web (master:5000/flask-app:latest)...  
+The push refers to a repository [master:5000/flask-app]  
+a8deddc4e222: Pushed  
+2916dd76ba80: Pushed  
+e03c530e5673: Layer already exists  
+0342f4a51cd7: Layer already exists  
+5e94921eba94: Layer already exists  
+ed06208397d5: Layer already exists  
+5accac14015f: Layer already exists  
+latest: digest: sha256:47b26870a38e3e468f44f81f4bf91ab9aca0637714f5b8795fccf2a85e29c8e1 size: 1786  
+Now that we have our image saved in our private registry, create the service from that image and the published port 80 that will translate to port 5098 on the containers that is set in the code.
+
+Note that we set only 1 replica, which means that every time we make a HTTP Request, we will be returned with the same hostname as we only have 1 container in our swarm.
+
+We also set --update-delay to 5 seconds so this means, when we update our service, each task (container) will be updated with 5 seconds delay between each one.
+
+Creating the Flask-Demo Service:
+
+[manager] $ docker service create --name flask-demo --network mynet --update-delay 5s --publish 80:5098 --replicas 1 master:5000/flask-app
+Listing our Services in our Swarm:
+
+List the services in our swarm and check if the replica number is the same as the desired count that was set when the service was created:
+
+[manager] $ docker service ls
+ID            NAME        MODE        REPLICAS  IMAGE  
+5y520y6fau5j  flask-demo  replicated  1/1       master:5000/flask-app:latest  
+xfk2z5s2ybcg  registry    replicated  1/1       registry:2  
+After we can see that the desired number is set, we can also run a ps to see the state and running time, as well as on which node the container lives:
+
+$ docker service ps flask-demo
+ID            NAME          IMAGE                         NODE      DESIRED STATE  CURRENT STATE           ERROR  PORTS  
+u7ab0xhwrlzh  flask-demo.1  master:5000/flask-app:latest  worker-1  Running        Running 11 seconds ago  
+Double checking, logging onto worker-1 and determine if the container lives on the mentioned node:
+
+[worker-1] $ docker ps --filter "name=flask-demo" --format "table {{.ID}}\t{{.Names}}"
+CONTAINER ID        NAMES  
+4e6bd7a8a2bf        flask-demo.1.u7ab0xhwrlzh3r8xme08ievop  
+For just some verification, lets have a look at the exposed port:
+
+$ docker service inspect --format="{{range .Endpoint.Ports}}{{.PublishedPort}}{{end}}" flask-demo
+80  
+The awesome thing here is that docker swarm uses the ingress routing mesh, so that all the nodes that is part of the swarm will answer requests on the exposed port, even if that container does not reside on that node.
+
+For example, we can see that our container resides on worker-1 so we will get the Public IP of our manager node and our worker node, then make HTTP Requests on port 80 against the public IP's and you will see that the requests gets served.
+
+Testing our Service:
+
+On our Manager Node:
+
+$ curl ip.ruanbekker.com
+52.214.150.151  
+On our Worker Node:
+
+[worker-1] $ curl ip.ruanbekker.com
+34.253.158.130  
+Now from a client instance outside our swarm, we will make an HTTP Request to our Manager and Worker Node IP:
+
+[client] $ curl -XGET 52.214.150.151
+Container Hostname: 4e6bd7a8a2bf , UUID: 771cc6bd-b669-4f68-83c6-cbb30ad01380[client] $  
+[client] $ curl -XGET 34.253.158.130
+Container Hostname: 4e6bd7a8a2bf , UUID: c4f4115b-e848-4941-a399-b703afed249d[client] $  
+We can see we need to change the code so that it ends with a new line character
+
+Updating our Application Code:
+
+$ vi app.py
+Change the code so that we add a new line character after our UUID:
+
+from
+
+return 'Container Hostname: ' + hostname + ' , ' + 'UUID: ' + str(randomid)  
+to:
+
+return 'Container Hostname: ' + hostname + ' , ' + 'UUID: ' + str(randomid) + '\n'  
+Build the Image from the Updated Code, Push the Image to our Private Registry:
+
+Now that our app is updated, we should build the image and push to our registry. We can apply a tag to our image like flask-app:v1 but sine we don't specify a tag, it will use the latest tag.
+
+If you use docker-compose the tag should be set via the docker-compose.yml file, and if docker-compose is not used, you should set the tag via docker build option:
+
+$ docker-compose build
+$ docker-compose push
+Pushing web (master:5000/flask-app:latest)...  
+The push refers to a repository [master:5000/flask-app]  
+Optionally, we can also build an image without docker-compose:
+
+$ docker build -t flask-app .
+$ docker tag flask-app master:5000/flask-app
+$ docker push master:5000/flask-app
+The push refers to a repository [master:5000/flask-app]  
+Lets make a Request to our API on our Private Registry to make sure we can see our repository:
+
+$ curl master:5000/v2/_catalog
+{"repositories":["flask-app"]}
+Verify, if we can see the updated Image from our Private Repository:
+
+$ docker images master:5000/flask-app
+REPOSITORY              TAG                 IMAGE ID            CREATED             SIZE  
+master:5000/flask-app   latest              3253d71edfa4        17 minutes ago      93.3 MB  
+master:5000/flask-app   <none>              b7fd5b5e7892        51 minutes ago      93.3 MB  
+Update the Service:
+
+Apply a rolling update to a service so that our application can be updated:
+
+$ docker service update --image master:5000/flask-app:latest flask-demo
+Make sure the service is in service:
+
+$ docker service ls
+ID            NAME        MODE        REPLICAS  IMAGE  
+5y520y6fau5j  flask-demo  replicated  1/1       master:5000/flask-app:latest  
+xfk2z5s2ybcg  registry    replicated  1/1       registry:2  
+If we run a docker service ps on our service name, we should see that the previous container was shut down, and a new container with the updated code has been spawned:
+
+$ docker service ps flask-demo
+ID            NAME              IMAGE                         NODE      DESIRED STATE  CURRENT STATE           ERROR  PORTS  
+ltvenwz4jidh  flask-demo.1      master:5000/flask-app:latest  worker-2  Running        Running 2 minutes ago  
+u7ab0xhwrlzh   \_ flask-demo.1  master:5000/flask-app:latest  worker-1  Shutdown       Shutdown 2 minutes ago  
+(Optionally:) Once again, you could logon to worker-2 to make sure we can see the container-id:
+
+[worker-2] $ docker ps --filter "name=flask-demo" --format "table {{.ID}}\t{{.Names}}"
+CONTAINER ID        NAMES  
+499b2a76da67        flask-demo.1.ltvenwz4jidhj7esc89ee6gzp  
+Testing our Updated Web Application:
+
+Now let's make those same HTTP Requests, to see if the service was updated with the latest image:
+
+[client] $ curl -XGET 52.214.150.151
+Container Hostname: 499b2a76da67 , UUID: b1d534eb-e737-46ce-91e2-5800bf24a72e
+
+[client] $ curl -XGET 52.214.150.151
+Container Hostname: 499b2a76da67 , UUID: 6c47b0c5-7ffa-4501-a522-c430e420b12c  
+We can see its working, as the task got updated, running on a new container.
+
+Scaling our Application:
+
+Lets scale our application to 10 containers:
+
+$ docker service scale flask-demo=10
+flask-demo scaled to 10  
+Let's have a look at our replica count:
+
+$ docker service ls
+ID            NAME        MODE        REPLICAS  IMAGE  
+5y520y6fau5j  flask-demo  replicated  10/10     master:5000/flask-app:latest  
+xfk2z5s2ybcg  registry    replicated  1/1       registry:2  
+We can see our tasks is replicated and we could further see on which node they are running:
+
+$ docker service ps flask-demo
+ID            NAME              IMAGE                         NODE      DESIRED STATE  CURRENT STATE           ERROR  PORTS  
+ltvenwz4jidh  flask-demo.1      master:5000/flask-app:latest  worker-2  Running        Running 2 minutes ago  
+xyxi33keqdny   \_ flask-demo.1  master:5000/flask-app:latest  worker-1  Shutdown       Shutdown 2 minutes ago  
+u7ab0xhwrlzh   \_ flask-demo.1  master:5000/flask-app:latest  worker-1  Shutdown       Shutdown 6 minutes ago  
+yhnf8wyrimvb  flask-demo.2      master:5000/flask-app:latest  master    Running        Running 39 seconds ago  
+vxghtq86537m  flask-demo.3      master:5000/flask-app:latest  worker-1  Running        Running 37 seconds ago  
+f3p8ym23r4ir  flask-demo.4      master:5000/flask-app:latest  worker-1  Running        Running 37 seconds ago  
+q9hgb8z58ybd  flask-demo.5      master:5000/flask-app:latest  master    Running        Running 39 seconds ago  
+qdxef5d2bspt  flask-demo.6      master:5000/flask-app:latest  worker-1  Running        Running 37 seconds ago  
+a7wjn1lo9jbz  flask-demo.7      master:5000/flask-app:latest  worker-2  Running        Running 41 seconds ago  
+776oi10gyo32  flask-demo.8      master:5000/flask-app:latest  worker-1  Running        Running 37 seconds ago  
+u2mpr2t7aoj5  flask-demo.9      master:5000/flask-app:latest  master    Running        Running 39 seconds ago  
+kypazgcch5aa  flask-demo.10     master:5000/flask-app:latest  worker-2  Running        Running 41 seconds ago  
+More verification, viewing the containers per node where the containers are running on:
+
+[master] $ docker ps --filter "name=flask-demo" --format "table {{.ID}}\t{{.Names}}"
+CONTAINER ID        NAMES  
+9e6b28ba711f        flask-demo.9.u2mpr2t7aoj5c5nggr2k3dvjf  
+4c3edef5c69b        flask-demo.2.yhnf8wyrimvbg937dt6tkjwb0  
+5a052e37ef73        flask-demo.5.q9hgb8z58ybd07cztmiqnqogy  
+And on the worker-1 node:
+
+[worker-1] $ docker ps --filter "name=flask-demo" --format "table {{.ID}}\t{{.Names}}"
+CONTAINER ID        NAMES  
+499b2a76da67        flask-demo.6.qdxef5d2bspt2dtga4pdj6ab1  
+3bd92ade8242        flask-demo.4.f3p8ym23r4iredo7xqyt1yt7h  
+bd64090dc3f5        flask-demo.3.vxghtq86537mpxpo5t31zm1i4  
+3a5effab8827        flask-demo.8.776oi10gyo32h76czx7jqwkgf  
+Further, on the worker-2 node:
+
+[worker-2] $ docker ps --filter "name=flask-demo" --format "table {{.ID}}\t{{.Names}}"
+CONTAINER ID        NAMES  
+20e8148ab72f        flask-demo.10.kypazgcch5aaw4l04ha8r4elv  
+217c86d234de        flask-demo.7.a7wjn1lo9jbzv4p5hbgierp7g  
+a186ed70646c        flask-demo.1.ltvenwz4jidhj7esc89ee6gzp  
+As the service is replicated to multiple containers, our application should now serve the requests from different containers, as we can see is expected from the below output:
+
+[client] $ curl -XGET 52.214.150.151
+Container Hostname: 9e6b28ba711f , UUID: 16780535-8c5f-445a-a1dd-fdb10e07bc59
+
+[client] $ curl -XGET 52.214.150.151
+Container Hostname: 4c3edef5c69b , UUID: ea496a8f-b49d-470b-a0f4-e695810374aa  
+Let's make 10 requests, to see the hostname reporting from the containers:
+
+$ for x in {1..10}; do curl -XGET 52.214.150.151; done
+
+Container Hostname: 3a5effab8827 , UUID: 00e3454e-4d0c-48d9-96ec-e8875c893b36  
+Container Hostname: 9e6b28ba711f , UUID: bf6da863-94a3-445d-b386-25e290004ed2  
+Container Hostname: 4c3edef5c69b , UUID: 1a611f14-0cc6-4495-b246-5bb4db65a002  
+Container Hostname: 5a052e37ef73 , UUID: 684f00dc-a17c-418a-bfb7-d2bac50d4c6e  
+Container Hostname: 20e8148ab72f , UUID: 85696153-d3d5-4f7a-b663-eb4e0c199555  
+Container Hostname: 217c86d234de , UUID: df7d2bd8-4cae-4150-a825-754e84709724  
+Container Hostname: a186ed70646c , UUID: 88cc84fe-44f7-4d4d-9f67-9479d52688d7  
+Container Hostname: 499b2a76da67 , UUID: e4d643e0-10e6-452f-abc7-f712fdf07cdd  
+Container Hostname: 3bd92ade8242 , UUID: ce23f3b2-c55d-4533-b164-5f60b8bf3aa0  
+Container Hostname: bd64090dc3f5 , UUID: 9e2bb8c2-848e-49ff-99d8-dff47644b74b  
+Let's make 12 requests, so in theory, we should see 10 unique hostnames:
+
+$ for x in {1..12}; do curl -XGET 52.214.150.151; done
+
+Container Hostname: 3a5effab8827 , UUID: 84a874b9-3767-4b07-82da-ba2ede0e2240  
+Container Hostname: 9e6b28ba711f , UUID: 0e1a7736-e89b-4c30-9739-97ef7b8a203a  
+Container Hostname: 4c3edef5c69b , UUID: 455df8e9-b465-4b58-865e-56d708148c26  
+Container Hostname: 5a052e37ef73 , UUID: 7478f449-ec48-4378-8cd1-fa0ae3465f78  
+Container Hostname: 20e8148ab72f , UUID: 25dd11fa-c09d-437a-b4d8-a12b7933a245  
+Container Hostname: 217c86d234de , UUID: b4e26634-037a-4694-b849-896c0bc89946  
+Container Hostname: a186ed70646c , UUID: 3af5619d-bfa9-4ac7-8190-0f11876b33b1  
+Container Hostname: 499b2a76da67 , UUID: e38bd20d-c9e7-4b1e-9f1f-a25574207558  
+Container Hostname: 3bd92ade8242 , UUID: 3caec655-a4f8-4956-a5b0-00a68db99233  
+Container Hostname: bd64090dc3f5 , UUID: 2c8cfe74-42ff-4463-b069-03fb3be5f290  
+Container Hostname: 3a5effab8827 , UUID: bb84adea-1dee-4b57-aea5-e086e0a979ce  
+Container Hostname: 9e6b28ba711f , UUID: 72706b15-544b-4a3f-b66c-5e1d3a363cc7  
+Some bash scripting to count any duplicates:
+
+$ for x in {1..10}; do curl -XGET 52.214.150.151; done >> run1.txt
+
+$ for x in {1..12}; do curl -XGET 52.214.150.151; done >> run2.txt
+Our first run (10 Requests):
+
+[client] $ cat run1.txt | awk '{print $3}' | sort | uniq -c
+      1 20e8148ab72f
+      1 217c86d234de
+      1 3a5effab8827
+      1 3bd92ade8242
+      1 499b2a76da67
+      1 4c3edef5c69b
+      1 5a052e37ef73
+      1 9e6b28ba711f
+      1 a186ed70646c
+      1 bd64090dc3f5
+Our second run (12 Requests):
+
+[client] $ cat run2.txt | awk '{print $3}' | sort | uniq -c
+      1 20e8148ab72f
+      1 217c86d234de
+      2 3a5effab8827
+      1 3bd92ade8242
+      1 499b2a76da67
+      1 4c3edef5c69b
+      1 5a052e37ef73
+      2 9e6b28ba711f
+      1 a186ed70646c
+      1 bd64090dc3f5
+Python Script to Randomly select one of the 3 docker hosts to do the HTTP GET Request, and return the Docker Host IP and the Container ID that was serving the response:
+
+>>> import time
+>>> import random
+>>> import requests
+>>> for x in xrange(20):
+...     time.sleep(0.125)
+...     docker_host = random.choice(['34.253.158.130', '34.251.150.142', '52.214.150.151'])
+...     get_request = requests.get('http://' + str(docker_host)).content.split(' ')[2]
+...     print("Host: {0}, Container: {1}".format(docker_host, get_request))
+...
+Host: 52.214.150.151, Container: 217c86d234de  
+Host: 52.214.150.151, Container: a186ed70646c  
+Host: 34.251.150.142, Container: bd64090dc3f5  
+Host: 34.251.150.142, Container: 3a5effab8827  
+Host: 52.214.150.151, Container: 499b2a76da67  
+Host: 52.214.150.151, Container: 3bd92ade8242  
+Host: 52.214.150.151, Container: bd64090dc3f5  
+Host: 52.214.150.151, Container: 3a5effab8827  
+Host: 34.253.158.130, Container: 9e6b28ba711f  
+Host: 52.214.150.151, Container: 9e6b28ba711f  
+Host: 52.214.150.151, Container: 4c3edef5c69b  
+Host: 34.251.150.142, Container: 4c3edef5c69b  
+Host: 34.251.150.142, Container: 9e6b28ba711f  
+Host: 34.253.158.130, Container: 4c3edef5c69b  
+Host: 34.253.158.130, Container: 5a052e37ef73  
+Host: 34.253.158.130, Container: 20e8148ab72f  
+Host: 34.251.150.142, Container: 5a052e37ef73  
+Host: 34.253.158.130, Container: 217c86d234de  
+Host: 52.214.150.151, Container: 5a052e37ef73  
+Host: 34.251.150.142, Container: 217c86d234de  
+Some Issues I Ran Into:
+"server gave HTTP response to HTTPS client" issue:
+- https://github.com/docker/distribution/issues/1874
+To fix this issue, on each node create a /etc/docker/daemon.json file and populate the file with the following info:
+
+cat /etc/docker/daemon.json  
+{ "insecure-registries":["master:5000"] }
+Manager Scheduling Only:
+
+We can set our manager to only serve requests and do scheduling, by draining the node, all containers will be moved from this node to the other nodes in the swarm:
+
+$ docker node ls
+ID                           HOSTNAME  STATUS  AVAILABILITY  MANAGER STATUS  
+j14mte3v1jhtbm3pb2qrpgwp6    worker-1  Ready   Active  
+siqyf3yricsvjkzvej00a9b8h *  master    Ready   Active        Leader  
+srl5yzme5hxnzxal2t1efmwje    worker-2  Ready   Active  
+After viewing our nodes in the swarm, we can select which node we want to drain:
+
+$ docker node update --availability drain manager
+manager  
+To verify our change:
+
+$ docker node ls
+ID                           HOSTNAME  STATUS  AVAILABILITY  MANAGER STATUS  
+j14mte3v1jhtbm3pb2qrpgwp6    worker-1  Ready   Active  
+siqyf3yricsvjkzvej00a9b8h *  master    Ready   Drain         Leader  
+srl5yzme5hxnzxal2t1efmwje    worker-2  Ready   Active  
+Inspecting our Manager Node:
+
+$ docker node inspect --pretty manager
+ID:                     siqyf3yricsvjkzvej00a9b8h  
+Hostname:               master  
+Joined at:              2017-06-21 07:50:43.525020216 +0000 utc  
+Status:  
+ State:                 Ready
+ Availability:          Drain
+ Address:               172.31.18.90
+Manager Status:  
+ Address:               172.31.18.90:2377
+ Raft Status:           Reachable
+ Leader:                Yes
+Platform:  
+ Operating System:      linux
+ Architecture:          x86_64
+Resources:  
+ CPUs:                  1
+ Memory:                3.673 GiB
+Plugins:  
+  Network:              bridge, host, macvlan, null, overlay
+  Volume:               local
+Engine Version:         17.03.1-ce  
+And now we can see that our containers is only running on the worker nodes:
+
+$ docker service ps flask-demo | grep Runn
+lig9wj70c5m8  flask-demo.1      master:5000/newapp:v1      worker-1  Running        Running 5 minutes ago  
+zmmzcm6xxzzo  flask-demo.2      master:5000/newapp:v1      worker-2  Running        Running 25 seconds ago  
+a292huwkzr23  flask-demo.3      master:5000/newapp:v1      worker-2  Running        Running 5 minutes ago  
+uuhbswsdvziq  flask-demo.4      master:5000/newapp:v1      worker-1  Running        Running 4 minutes ago  
+x4vrrs6fgpqz  flask-demo.5      master:5000/newapp:v1      worker-2  Running        Running 25 seconds ago  
+...
+Deleting the Service:
+
+$ docker service rm flask-demo
+Deleting the Network:
+
+$ docker network rm mynet
+Leaving the Swarm:
+
+To remove nodes from the swarm, run the following from the nodes:
+
+[worker-1] $ docker swarm leave
+[worker-2] $ docker swarm leave
+Then we can list our nodes to get the nodes that we want to remove from the manager:
+
+[master] $ docker node ls
+ID                           HOSTNAME  STATUS  AVAILABILITY  MANAGER STATUS  
+j14mte3v1jhtbm3pb2qrpgwp6    worker-1  Down    Active  
+siqyf3yricsvjkzvej00a9b8h *  master    Ready   Drain         Leader  
+srl5yzme5hxnzxal2t1efmwje    worker-2  Down    Active  
+And removing the nodes from the managers list:
+
+$ docker node rm worker-1
+worker-1
+
+$ docker node rm worker-2
+worker-2
+
+$ docker node ls
+ID                           HOSTNAME  STATUS  AVAILABILITY  MANAGER STATUS  
+siqyf3yricsvjkzvej00a9b8h *  master    Ready   Drain         Leader  
+Resources:
+
+https://docs.docker.com/engine/swarm/
+I hope this was useful, and I will continue writing some more content on Docker Swarm :D

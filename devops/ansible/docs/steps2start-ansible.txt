@@ -3,12 +3,27 @@ Ansible Master/ Ansible Controller
 ansible @ > ansible -m ping all
 ansible @ > ansible all -m ping
 
+ad-hoc commands:
+----------------
 ansible @ > ansible all -m command -a "whoami"
 ansible @ > ansible all -m command -a "pwd"
  
-ansible @ > ansible-playbook hello.yml
-
 ansible @ > ansible all -b -m command -a "yum install tree -y"
+ansible @ > ansible -b localhost -m yum -a "name=git"
+ansible @ > ansible -b localhost -m yum -a "name=git state=removed"
+ansible @ > ansible -b appserver -i common-hosts -m yum -a "name=wget"
+
+ansible all -m setup | more
+ansible all -m setup -a 'filter=*'
+
+
+Execution commnads:
+------------------
+ansible @ > ansible-playbook apache.yml
+
+ansible @ > ansible-playbook -v apache.yml
+ansible @ > ansible-playbook -vv apache.yml
+ansible @ > ansible-playbook -vvv apache.yml
 
 ansible @ > ansible-playbook -b -i common-hosts tomcat-java-jenkins.yml
-
+ansible @ > ansible-playbook -b appserver -i common-hosts tomcat-java-jenkins.yml

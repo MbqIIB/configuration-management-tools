@@ -1,0 +1,17 @@
+---
+- hosts: all
+#- hosts: localhost
+  become: true
+  tasks:
+  - name: Install apache server
+    yum:
+      name: httpd
+      state: present
+  - name: Ensure apache service is runnning
+    service:
+      name: httpd
+      state: started
+      enabled: true
+       
+# ansible > ansible-playbook apache.yml
+# http://ec2-34-223-250-108.us-west-2.compute.amazonaws.com:80
