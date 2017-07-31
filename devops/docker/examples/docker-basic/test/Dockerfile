@@ -5,11 +5,10 @@ RUN apt-get update && apt-get install -y python-software-properties software-pro
 
 RUN add-apt-repository ppa:webupd8team/java
 
-RUN apt-get update && apt-get install -y oracle-jdk7-installer maven
+RUN echo "oracle-java8-installer shared/accepted-oracle-license-v1-1 boolean true" | debconf-set-selections
 
-ADD git clone https://github.com/santosh32/spring-app-with-jenkins.git /usr/local/spring-app-with-jenkins
+RUN apt-get update && apt-get install -y oracle-java8-installer maven
 
-RUN cd /usr/local/spring-app-with-jenkins && mvn install
-
-#CMD ["java", "-cp", "/usr/local/spring-app-with-jenkins/target/spring-app-with-jenkins-1.0-SNAPSHOT.jar", "HelloWorld"]
+#ADD . /usr/local/helloworld
+#RUN cd /usr/local/helloworld && mvn install
 CMD ["echo", "hellow"]
