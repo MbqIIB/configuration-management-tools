@@ -8,7 +8,7 @@ RUN echo "oracle-java8-installer shared/accepted-oracle-license-v1-1 boolean tru
 
 RUN apt-get update && apt-get install -y oracle-java8-installer maven
 
-ADD . /usr/local/java-maven-helloworld
+ADD ./java-maven-helloworld /usr/local/java-maven-helloworld
 RUN cd /usr/local/java-maven-helloworld && mvn install
 #CMD ["java", "-cp", "/usr/local/helloworld/target/helloworld-1.0.jar", "Application"]
 
