@@ -84,3 +84,11 @@ $ sudo docker run --name docker-jenkins-1 -d -p 8081:8080 jenkins
 http://192.168.33.20:8080/jenkins
 http://192.168.33.20:8081/jenkins
 ----------------------------------------
+
+
+#!/bin/bash
+# Delete all containers
+docker rm $(docker ps -a -q)
+
+# Delete all images
+docker rmi $(docker images -q)
