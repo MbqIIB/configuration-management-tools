@@ -10,6 +10,6 @@ RUN apt-get update && apt-get install -y oracle-java8-installer maven
 
 ADD ./java-maven-helloworld /usr/local/java-maven-helloworld
 RUN cd /usr/local/java-maven-helloworld && mvn install
-#CMD ["java", "-cp", "/usr/local/helloworld/target/helloworld-1.0.jar", "Application"]
+CMD ["java", "-cp", "/usr/local/java-maven-helloworld/target/java-maven-helloworld-1.0-SNAPSHOT", "Application"]
 
-CMD ["echo", "HelloWorld"]
+#CMD ["echo", "HelloWorld"]
