@@ -10,5 +10,11 @@ RUN apt-get update && apt-get install -y oracle-java8-installer maven
 
 ADD ./java-maven-helloworld /usr/local/java-maven-helloworld
 RUN cd /usr/local/java-maven-helloworld && mvn install
+
 CMD ["java", "-jar", "/usr/local/java-maven-helloworld/target/java-maven-helloworld-1.0-SNAPSHOT.jar"]
 
+# docker build -t java-maven-helloworld:1.0 .
+# docker run java-maven helloworld:1.0
+
+# docker tag java-maven-helloworld:1.0 santosh32/java-maven-helloworld:1.0
+# docker push santosh32/java-maven-helloworld:1.0
