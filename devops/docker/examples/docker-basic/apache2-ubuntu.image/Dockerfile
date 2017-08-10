@@ -10,6 +10,8 @@ CMD ["echo", "Hello World !!!"]
 # docker build -t apache2-ubuntu.image .
 # docker run apache2-ubuntu.image
 # docker run -i -t apache2-ubuntu.image /bin/bash
+# service apache2 start 
+# http://host-machine
 
 # docker tag apache2-ubuntu.image santosh32/apache2-ubuntu.image
 # docker push santosh32/apache2-ubuntu.image
