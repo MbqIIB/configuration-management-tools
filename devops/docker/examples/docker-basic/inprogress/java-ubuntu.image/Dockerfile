@@ -8,13 +8,13 @@ RUN echo "oracle-java8-installer shared/accepted-oracle-license-v1-1 boolean tru
 
 RUN apt-get update && apt-get install -y oracle-java8-installer
 
-ADD ./java-maven-helloworld /usr/local/java-maven-helloworld
-RUN cd /usr/local/java-maven-helloworld && mvn install
+COPY Helloworld.java HelloWorld.java
 
-CMD ["java", "-jar", "/usr/local/java-maven-helloworld/target/java-maven-helloworld-1.0-SNAPSHOT.jar"]
+RUN javac HelloWorld.java
+CMD java HelloWorld
 
-# docker build -t java-maven-helloworld:1.0 .
-# docker run java-maven-helloworld:1.0
+# docker build -t java-ubuntu.image .
+# docker run java-ubuntu.image
 
-# docker tag java-maven-helloworld:1.0 santosh32/java-maven-helloworld:1.0
-# docker push santosh32/java-maven-helloworld:1.0
+# docker tag java-ubuntu.image santosh32/java-ubuntu.image
+# docker push santosh32/java-ubuntu.image
