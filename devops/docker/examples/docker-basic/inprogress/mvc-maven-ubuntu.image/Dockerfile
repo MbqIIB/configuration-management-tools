@@ -25,30 +25,8 @@ EXPOSE 8080
 CMD ["mvn", "tomcat7:run"]
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # docker build -t mvc-maven-ubuntu.image .
-# docker run mvc-maven-ubuntu.image
+# docker run -ti --rm -p 8080:8080 mvc-maven-ubuntu.image
 # docker run -i -t mvc-maven-ubuntu.image /bin/bash
 # http://host-machine
 
