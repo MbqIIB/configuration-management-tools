@@ -14,9 +14,15 @@ WORKDIR /devops-lookup/sf-mvc-json-response-java-config
 
 RUN git pull
 
-RUN mvn clean install
+#RUN mvn clean install
 
-CMD ["mvn tomcat7:run"]
+#CMD ["mvn tomcat7:run"]
+
+RUN ["mvn", "package"]
+
+EXPOSE 8080
+
+CMD ["mvn", "tomcat7:run"]
 
 
 
