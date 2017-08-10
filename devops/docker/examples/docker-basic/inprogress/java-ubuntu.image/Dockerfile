@@ -8,10 +8,10 @@ RUN echo "oracle-java8-installer shared/accepted-oracle-license-v1-1 boolean tru
 
 RUN apt-get update && apt-get install -y oracle-java8-installer
 
-COPY Helloworld.java HelloWorld.java
+COPY Helloworld.java Helloworld.java
 
-RUN javac HelloWorld.java
-CMD java HelloWorld
+RUN javac Helloworld.java
+CMD java Helloworld
 
 # docker build -t java-ubuntu.image .
 # docker run java-ubuntu.image
