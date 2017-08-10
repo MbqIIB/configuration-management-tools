@@ -1,1 +1,1 @@
-{"virtualbox":{"/vagrant":{"guestpath":"/vagrant","hostpath":"D:/config_mgmt_tools/configuration-management-tools/devops/docker/vagrant-docker-ubuntu","disabled":false,"__vagrantfile":true}}}
+{"virtualbox":{"/vagrant":{"guestpath":"/vagrant","hostpath":"D:/config_mgmt_tools/configuration-management-tools/devops/docker/environment/vagrant-docker-ubuntu","disabled":false,"__vagrantfile":true}}}
