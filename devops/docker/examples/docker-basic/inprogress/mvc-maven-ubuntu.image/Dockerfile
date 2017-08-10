@@ -12,6 +12,8 @@ RUN git clone https://github.com/santosh32/devops-lookup.git
 
 WORKDIR /devops-lookup/sf-mvc-json-response-java-config
 
+RUN git pull
+
 RUN mvn clean install
 
 CMD ["mvn tomcat7:run"]
