@@ -24,7 +24,7 @@ CMD ["mvn", "spring-boot:run"]
 # docker build -t boot-maven-ubuntu.image .
 # docker run -ti --rm -p 8080:8080 boot-maven-ubuntu.image
 # docker run -i -t boot-maven-ubuntu.image /bin/bash
-# http://host-machine
+# http://localhost:8080/employees/James
 
 # docker tag boot-maven-ubuntu.image santosh32/boot-maven-ubuntu.image
 # docker push santosh32/boot-maven-ubuntu.image
