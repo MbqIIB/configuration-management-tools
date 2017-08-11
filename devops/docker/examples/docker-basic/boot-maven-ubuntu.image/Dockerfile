@@ -28,3 +28,5 @@ CMD ["mvn", "spring-boot:run"]
 
 # docker tag boot-maven-ubuntu.image santosh32/boot-maven-ubuntu.image
 # docker push santosh32/boot-maven-ubuntu.image
+
+# docker logs app-image

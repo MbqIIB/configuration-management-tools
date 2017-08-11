@@ -15,3 +15,5 @@ CMD ["echo", "Hello World !!!"]
 
 # docker tag git-ubuntu.image santosh32/git-ubuntu.image
 # docker push santosh32/git-ubuntu.image
+
+# docker logs app-image

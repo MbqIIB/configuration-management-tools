@@ -15,3 +15,5 @@ CMD ["echo", "Hello World !!!"]
 
 # docker tag apache2-ubuntu.image santosh32/apache2-ubuntu.image
 # docker push santosh32/apache2-ubuntu.image
+
+# docker logs app-image
