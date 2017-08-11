@@ -9,8 +9,7 @@ WORKDIR /devops-spring/spring-boot-rest-basic
 
 RUN ["mvn", "package"]
 
-
-ADD target/spring-boot-rest-basic-1.0-SNAPSHOT.warr /usr/local/tomcat/webapps/spring-boot-rest-basic.war
+ADD target/spring-boot-rest-basic-1.0-SNAPSHOT.war /usr/local/tomcat/webapps/spring-boot-rest-basic.war
 
 EXPOSE 8080
 
