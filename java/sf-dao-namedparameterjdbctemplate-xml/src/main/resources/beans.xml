@@ -1,0 +1,28 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<bean id="pooledDataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
+		<property name="url" value="jdbc:oracle:thin:@localhost:1522:orcl" />
+		<property name="username" value="srlp" />
+		<property name="password" value="srlp" />
+	</bean>
+
+	<bean id="namedParameterJdbcTemplate"
+		class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+		<constructor-arg name="dataSource" ref="pooledDataSource" />
+	</bean>
+
+	<bean id="employeeDao" class="in.spring4buddies.application.dao.EmployeeDaoImpl">
+		<property name="namedParameterJdbcTemplate" ref="namedParameterJdbcTemplate" />
+	</bean>
+
+	<bean id="customerDao" class="in.spring4buddies.application.dao.CustomerDaoImpl">
+		<property name="namedParameterJdbcTemplate" ref="namedParameterJdbcTemplate" />
+	</bean>
+
+</beans>
