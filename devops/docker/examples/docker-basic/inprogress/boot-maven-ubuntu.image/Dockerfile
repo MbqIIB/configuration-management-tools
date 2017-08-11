@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y oracle-java8-installer maven git
 
 RUN git clone https://github.com/santosh32/devops-spring.git
 
-WORKDIR /devops-lookup/spring-boot-rest-basic
+WORKDIR /devops-spring/spring-boot-rest-basic
 
 RUN git pull
 
