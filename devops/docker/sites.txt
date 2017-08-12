@@ -18,5 +18,17 @@ http://www.toadworld.com/platforms/oracle/w/wiki/11638.using-oracle-database-wit
  https://g00glen00b.be/docker-spring-boot/
  
  https://www.ibm.com/developerworks/library/j-chaincode-for-java-developers/index.html
+ 
+ ********************************************
+apt-get install mysql-server-5.6
+mysql -uroot -p
+ 
+show databases;
+create database mydb
+show databases;
 
+use mydb;
 
+CREATE TABLE users (id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,name VARCHAR(30) NOT NULL,email VARCHAR(50) NOT NULL);
+
+********************************************
