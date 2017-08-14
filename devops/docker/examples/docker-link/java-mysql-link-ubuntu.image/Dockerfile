@@ -40,4 +40,6 @@ CMD ["mvn", "spring-boot:run"]
 # docker exec -it linked-mysql bash
 # mysql -uroot -p
 #------------------------------------
+#connect java-
+# docker exec -it java-mysql-link bash
 # http://54.186.104.102:8080/create?email=test@docker.com&name=mysql
