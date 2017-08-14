@@ -1,0 +1,65 @@
+docker run --detach --name=test-mysql --env="MYSQL_ROOT_PASSWORD=mypassword" mysql
+docker inspect test-mysql
+"IPAddress": "172.17.0.2",
+
+client
+------
+apt-get install mysql-client
+mysql -uroot -pmypassword -h 172.17.0.2 -P 3306
+
+docker rm -f test-mysql
+docker run --detach --name=test-mysql --env="MYSQL_ROOT_PASSWORD=root" --publish 3306:3306 mysql
+client
+------
+mysql -uroot -proot -h127.0.0.1 -P3306
+
+docker run --detach --name=test-host-mysql --net=host --env="MYSQL_ROOT_PASSWORD=root" --env="MYSQL_DATABASE=mydb" --env="MYSQL_USER=mydbuser" --env="MYSQL_PASSWORD=mydbpassword" --publish 3306:3306 mysql
+docker exec -it test-host-mysql bash
+mysql -uroot -p
+docker exec -it test-host-mysql /bin/bash
+mysql -uroot -p
+
+-----------------------------------------------------------------------
+sudo apt-get remove --purge mysql-server mysql-client mysql-common
+sudo apt-get autoremove
+sudo apt-get autoclean
+sudo apt-get autoremove
+----------------------------------------------------------------------
+
+
+********************************************
+Vagrant Machine-
+---------------
+apt-get update
+apt-get install mysql-server-5.6
+
+/etc/mysql/my.cnf
+
+bind-address = 0.0.0.0
+service mysql restart
+
+mysql -uroot -p
+ 
+show databases;
+create database mydb
+show databases;
+
+use mydb;
+
+CREATE TABLE users (id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,name VARCHAR(30) NOT NULL,email VARCHAR(50) NOT NULL);
+
+
+CREATE USER 'mydbuser'@'localhost' IDENTIFIED BY 'mydbpassword';
+
+CREATE USER 'mydbuser'@'%' IDENTIFIED BY 'mydbpassword';
+
+GRANT ALL PRIVILEGES ON *.* to mydbuser@localhost IDENTIFIED BY 'mydbpassword' WITH GRANT OPTION;
+
+GRANT ALL PRIVILEGES ON *.* to mydbuser@'%' IDENTIFIED BY 'mydbpassword' WITH GRANT OPTION;
+
+FLUSH PRIVILEGES;
+
+EXIT;
+
+
+********************************************

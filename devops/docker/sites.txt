@@ -19,37 +19,3 @@ http://www.toadworld.com/platforms/oracle/w/wiki/11638.using-oracle-database-wit
  
  https://www.ibm.com/developerworks/library/j-chaincode-for-java-developers/index.html
  
- ********************************************
-apt-get update
-apt-get install mysql-server-5.6
-
-/etc/mysql/my.cnf
-
-bind-address = 0.0.0.0
-service mysql restart
-
-mysql -uroot -p
- 
-show databases;
-create database mydb
-show databases;
-
-use mydb;
-
-CREATE TABLE users (id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,name VARCHAR(30) NOT NULL,email VARCHAR(50) NOT NULL);
-
-
-CREATE USER 'mydbuser'@'localhost' IDENTIFIED BY 'mydbpassword';
-
-CREATE USER 'mydbuser'@'%' IDENTIFIED BY 'mydbpassword';
-
-GRANT ALL PRIVILEGES ON *.* to mydbuser@localhost IDENTIFIED BY 'mydbpassword' WITH GRANT OPTION;
-
-GRANT ALL PRIVILEGES ON *.* to mydbuser@'%' IDENTIFIED BY 'mydbpassword' WITH GRANT OPTION;
-
-FLUSH PRIVILEGES;
-
-EXIT;
-
-
-********************************************
