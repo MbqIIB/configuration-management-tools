@@ -1,8 +1,5 @@
 package in.spring4buddies.application;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

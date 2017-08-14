@@ -5,8 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import in.spring4buddies.application.dao.UserDao;
 import in.spring4buddies.application.model.User;
-import in.spring4buddies.application.model.UserDao;
 
 @Controller
 public class UserController {
