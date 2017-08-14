@@ -1,0 +1,53 @@
+docker run --detach --name=test-mysql --env="MYSQL_ROOT_PASSWORD=mypassword" mysql
+docker inspect test-mysql
+"IPAddress": "172.17.0.2",
+
+apt-get install mysql-client
+mysql -uroot -pmypassword -h 172.17.0.2 -P 3306
+
+docker rm -f test-mysql
+docker run --detach --name=test-mysql --env="MYSQL_ROOT_PASSWORD=root" --publish 3306:3306 mysql
+
+docker run --detach --name=test-host-mysql --net=host --env="MYSQL_ROOT_PASSWORD=root" --env="MYSQL_DATABASE=mydb" --env="MYSQL_USER=mydbuser" --env="MYSQL_PASSWORD=mydbpassword" --publish 3306:3306 mysql
+mysql -uroot -proot -h127.0.0.1 -P3306
+docker exec -it test-host-mysql bash
+docker exec -it test-host-mysql /bin/bash
+
+172.17.0.1
+10.0.2.15
+192.168.33.50
+127.0.0.1
+
+mysql -uroot -pmypassword -h10.0.2.15 -P6603
+
+
+root@vagrant-ubuntu-trusty-64:~# cat /etc/hosts
+127.0.0.1 localhost
+
+# The following lines are desirable for IPv6 capable hosts
+::1 ip6-localhost ip6-loopback
+fe00::0 ip6-localnet
+ff00::0 ip6-mcastprefix
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+ff02::3 ip6-allhosts
+root@vagrant-ubuntu-trusty-64:~# docker exec -it test-mysql bash
+root@0d720cabae04:/# cat /etc/hosts
+127.0.0.1       localhost
+::1     localhost ip6-localhost ip6-loopback
+fe00::0 ip6-localnet
+ff00::0 ip6-mcastprefix
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+172.17.0.2      0d720cabae04
+root@0d720cabae04:/#
+
+
+
+http://www.johnghawi.com/2015/09/error-installing-mysql-server-56-on.html
+
+
+sudo apt-get remove --purge mysql-server mysql-client mysql-common
+sudo apt-get autoremove
+sudo apt-get autoclean
+sudo apt-get autoremove
