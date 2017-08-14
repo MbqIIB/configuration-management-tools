@@ -27,9 +27,17 @@ CMD ["mvn", "spring-boot:run"]
 # docker run -d --name=linked-mysql --net=host --env="MYSQL_ROOT_PASSWORD=root" --env="MYSQL_DATABASE=mydb" --env="MYSQL_USER=mydbuser" --env="MYSQL_PASSWORD=mydbpassword" --publish 3306:3306 mysql
 # docker run -d --name=linked-mysql --env="MYSQL_ROOT_PASSWORD=root" --env="MYSQL_DATABASE=mydb" --env="MYSQL_USER=mydbuser" --env="MYSQL_PASSWORD=mydbpassword" --publish 3306:3306 mysql
 
-# docker run -d --name java-mysql-link --link linked-mysql:mysql java-mysql-link-ubuntu.image
+# docker run -d --name java-mysql-link --link linked-mysql:mysql -p 8080:8080 java-mysql-link-ubuntu.image
 
 # docker tag java-mysql-link-ubuntu.image santosh32/java-mysql-link-ubuntu.image
 # docker push santosh32/java-mysql-link-ubuntu.image
 
 # docker logs app-image
+# docker inspect java-mysql-link
+
+#------------------------------------
+#connect mysql-
+# docker exec -it linked-mysql bash
+# mysql -uroot -p
+#------------------------------------
+# http://54.186.104.102:8080/create?email=test@docker.com&name=mysql
