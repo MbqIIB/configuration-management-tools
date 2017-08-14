@@ -1,4 +1,4 @@
-package in.spring4buddies.application.models;
+package in.spring4buddies.application.model;
 
 import javax.transaction.Transactional;
 
@@ -9,4 +9,4 @@ public interface UserDao extends CrudRepository<User, Long> {
 
 	public User findByEmail(String email);
 
-} // class UserDao
+}

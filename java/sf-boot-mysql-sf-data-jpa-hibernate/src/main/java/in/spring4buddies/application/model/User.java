@@ -1,4 +1,4 @@
-package in.spring4buddies.application.models;
+package in.spring4buddies.application.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

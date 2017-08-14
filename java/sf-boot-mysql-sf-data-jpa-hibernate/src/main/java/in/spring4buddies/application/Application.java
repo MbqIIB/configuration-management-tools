@@ -1,5 +1,8 @@
 package in.spring4buddies.application;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -12,10 +15,10 @@ public class Application {
 		/*Connection conn = null;
 
 		try {
-			String userName = "root";
-			String password = "root";
+			String userName = "mydbuser";
+			String password = "mydbpassword";
 
-			String url = "jdbc:mysql://54.202.11.121:3306/mydb";
+			String url = "jdbc:mysql://54.218.72.223:3306/mydb";
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
 			conn = DriverManager.getConnection(url, userName, password);
 			System.out.println("Database connection established");

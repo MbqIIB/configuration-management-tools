@@ -1,12 +1,12 @@
-package in.spring4buddies.application.controllers;
+package in.spring4buddies.application.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import in.spring4buddies.application.models.User;
-import in.spring4buddies.application.models.UserDao;
+import in.spring4buddies.application.model.User;
+import in.spring4buddies.application.model.UserDao;
 
 @Controller
 public class UserController {
