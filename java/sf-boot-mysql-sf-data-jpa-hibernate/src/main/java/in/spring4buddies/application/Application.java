@@ -18,7 +18,8 @@ public class Application {
 			String userName = "mydbuser";
 			String password = "mydbpassword";
 
-			String url = "jdbc:mysql://54.218.72.223:3306/mydb";
+			String url = "jdbc:mysql://192.168.33.50:3306/mydb";
+//			String url = "jdbc:mysql://10.0.2.15:3306/mydb";
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
 			conn = DriverManager.getConnection(url, userName, password);
 			System.out.println("Database connection established");

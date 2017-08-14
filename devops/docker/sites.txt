@@ -20,7 +20,14 @@ http://www.toadworld.com/platforms/oracle/w/wiki/11638.using-oracle-database-wit
  https://www.ibm.com/developerworks/library/j-chaincode-for-java-developers/index.html
  
  ********************************************
+apt-get update
 apt-get install mysql-server-5.6
+
+/etc/mysql/my.cnf
+
+bind-address = 0.0.0.0
+service mysql restart
+
 mysql -uroot -p
  
 show databases;
