@@ -12,6 +12,7 @@ EXPOSE 8080
 CMD ["mvn", "spring-boot:run"]
 
 # docker-compose up -d
+# docker-compose run -d --service-ports --name sf-boot-container sf-boot-container
 
 # docker build -t java-mysql-link-maven.image .
 
