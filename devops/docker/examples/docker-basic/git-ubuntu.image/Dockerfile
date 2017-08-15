@@ -6,7 +6,7 @@ WORKDIR /devops-lookup/sf-mvc-json-response-java-config
 
 RUN git clone https://github.com/santosh32/devops-lookup.git
 
-CMD ["echo", "Git installed and clone repository successfully !!!"]
+CMD ["echo", "Git installed and cloned repository successfully !!!"]
 
 # docker build -t git-ubuntu.image .
 # docker run git-ubuntu.image
