@@ -1,0 +1,19 @@
+version: '2'
+services:
+  linked-mysql:
+    image: mysql
+    container_name: linked-mysql
+    ports:
+    - 3306:3306
+    environment:
+    - MYSQL_ROOT_PASSWORD=root
+    - MYSQL_DATABASE=mydb
+    - MYSQL_USER=mydbuser
+    - MYSQL_PASSWORD=mydbpassword
+  sf-boot-container:
+    image: santosh32/java-mysql-link-maven.image
+    container_name: sf-boot-container
+    links:
+    - linked-mysql
+    ports:
+    - 8080:8080
