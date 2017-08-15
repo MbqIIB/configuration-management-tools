@@ -1,0 +1,19 @@
+version: '2'
+services:
+  mysql:
+    image: mysql
+    container_name: mysql
+    ports:
+    - '3306'
+    environment:
+    - MYSQL_ROOT_PASSWORD=root
+    - MYSQL_DATABASE=mydb
+    - MYSQL_USER=mydbuser
+    - MYSQL_PASSWORD=mydbpassword
+  ghost:
+    build: ./sf-boot-mysql-sf-data-jpa-hibernate
+    container_name: sf-boot-container
+    depends_on:
+    - mysql
+    ports:
+    - 8080:8080
