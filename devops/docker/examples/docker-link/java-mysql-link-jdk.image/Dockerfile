@@ -1,21 +1,21 @@
 FROM openjdk:8-jdk-alpine
 MAINTAINER docker@devops.com
 
-#RUN apt-get update && apt-get install -y oracle-java8-installer maven git
+#RUN apt-get update && apt-get install -y maven git
 
-#RUN git clone https://github.com/santosh32/configuration-management-tools.git
+RUN git clone https://github.com/santosh32/configuration-management-tools.git
 
-#WORKDIR /configuration-management-tools/java/sf-boot-mysql-sf-data-jpa-hibernate
+WORKDIR /configuration-management-tools/java/sf-boot-mysql-sf-data-jpa-hibernate
 
-#RUN git pull
+RUN git pull
 
-#RUN ["mvn", "package"]
+RUN ["mvn", "package"]
 
 #EXPOSE 8080
 
 #CMD ["mvn", "spring-boot:run"]
 
-CMD ["echo", "tesing"]
+CMD ["echo", "Build Successfully"]
 
 # mvn spring-boot:run -Dfork=true
 # docker build -t java-mysql-link-jdk.image .
