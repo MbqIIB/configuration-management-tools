@@ -3,15 +3,14 @@ MAINTAINER docker@devops.com
 
 WORKDIR sf-boot-mysql-sf-data-jpa-hibernate
 
-ADD ~/configuration-management-tools/java/sf-boot-mysql-sf-data-jpa-hibernate/ ${WORKDIR}
+ADD ./sf-boot-mysql-sf-data-jpa-hibernate/ ${WORKDIR}
 
-#RUN ["mvn", "package"]
+RUN ["mvn", "package"]
 
-#EXPOSE 8080
+EXPOSE 8080
 
-#CMD ["mvn", "spring-boot:run"]
+CMD ["mvn", "spring-boot:run"]
 
-CMD ["echo", "hi"]
 
 # mvn spring-boot:run -Dfork=true
 # docker build -t java-mysql-link-maven.image .
