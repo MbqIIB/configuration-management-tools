@@ -1,9 +1,8 @@
 version: '2'
 services:
-  mysql:
+  linked-mysql:
     image: mysql
-    container_name: mysql
-    publish_all: true
+    container_name: linked-mysql
     ports:
     - 3306:3306
     environment:
@@ -15,6 +14,6 @@ services:
     build: .
     container_name: sf-boot-container
     links:
-    - mysql
+    - linked-mysql
     ports:
     - 8080:8080
