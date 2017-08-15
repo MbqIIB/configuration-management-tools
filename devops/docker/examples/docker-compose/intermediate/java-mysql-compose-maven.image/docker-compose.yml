@@ -13,7 +13,7 @@ services:
   sf-boot-container:
     build: .
     container_name: sf-boot-container
-    depends_on:
+    links:
     - mysql
     ports:
     - 8080:8080
