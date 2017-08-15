@@ -10,7 +10,7 @@ services:
     - MYSQL_DATABASE=mydb
     - MYSQL_USER=mydbuser
     - MYSQL_PASSWORD=mydbpassword
-  ghost:
+  sf-boot-container:
     build: .
     container_name: sf-boot-container
     depends_on:
