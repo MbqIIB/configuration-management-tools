@@ -8,10 +8,13 @@ RUN echo "oracle-java8-installer shared/accepted-oracle-license-v1-1 boolean tru
 
 RUN apt-get update && apt-get install -y oracle-java8-installer maven
 
-ADD ./java-maven-ubuntu.image /usr/local/java-maven-ubuntu.image
-RUN cd /usr/local/java-maven-ubuntu.image && mvn install
+WORKDIR java-maven-helloworld
 
-CMD ["java", "-jar", "/usr/local/java-maven-ubuntu.image/target/java-maven-ubuntu.image-1.0-SNAPSHOT.jar"]
+ADD ./java-maven-helloworld/ ${WORKDIR}
+
+RUN mvn install
+
+CMD ["java", "-jar", "/java-maven-helloworld/target/java-maven-helloworld-1.0-SNAPSHOT.jar"]
 
 # docker build -t java-maven-ubuntu.image:1.0 .
 # docker run java-maven-ubuntu.image:1.0
