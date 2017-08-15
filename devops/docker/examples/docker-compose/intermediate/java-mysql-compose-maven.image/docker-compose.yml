@@ -11,7 +11,7 @@ services:
     - MYSQL_USER=mydbuser
     - MYSQL_PASSWORD=mydbpassword
   ghost:
-    build: ./sf-boot-mysql-sf-data-jpa-hibernate
+    build: .
     container_name: sf-boot-container
     depends_on:
     - mysql
