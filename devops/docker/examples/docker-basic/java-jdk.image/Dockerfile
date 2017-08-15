@@ -6,7 +6,7 @@ COPY Helloworld.java Helloworld.java
 RUN javac Helloworld.java
 CMD java Helloworld
 
-# docker build -t java-jdk.image .
+# docker build -t java-jdk.image .d
 
 # docker run -ti --rm java-jdk.image
 

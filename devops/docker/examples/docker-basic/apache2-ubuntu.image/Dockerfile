@@ -5,7 +5,7 @@ RUN apt-get update -y && apt-get install apache2 -y
 
 EXPOSE 80
 
-CMD ["echo", "Hello World !!!"]
+CMD ["echo", "Apache2 installed via ubuntu:14.04 Image !!!"]
 
 # docker build -t apache2-ubuntu.image .
 # docker run apache2-ubuntu.image
@@ -16,4 +16,4 @@ CMD ["echo", "Hello World !!!"]
 # docker tag apache2-ubuntu.image santosh32/apache2-ubuntu.image
 # docker push santosh32/apache2-ubuntu.image
 
-# docker logs app-image
+# docker logs apache2-ubuntu.image

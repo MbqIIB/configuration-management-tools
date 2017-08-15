@@ -21,12 +21,12 @@ EXPOSE 8080
 CMD ["mvn", "spring-boot:run"]
 
 # mvn spring-boot:run -Dfork=true
-# docker build -t boot-maven-ubuntu.image .
-# docker run -ti --rm -p 8080:8080 boot-maven-ubuntu.image
-# docker run -i -t boot-maven-ubuntu.image /bin/bash
+# docker build -t sf-boot-maven-git-ubuntu.image .
+# docker run -ti --rm -p 8080:8080 sf-boot-maven-git-ubuntu.image
+# docker run -i -t sf-boot-maven-git-ubuntu.image /bin/bash
 # http://localhost:8080/employees/James
 
-# docker tag boot-maven-ubuntu.image santosh32/boot-maven-ubuntu.image
-# docker push santosh32/boot-maven-ubuntu.image
+# docker tag sf-boot-maven-git-ubuntu.image santosh32/sf-boot-maven-git-ubuntu.image
+# docker push santosh32/sf-boot-maven-git-ubuntu.image
 
 # docker logs app-image
