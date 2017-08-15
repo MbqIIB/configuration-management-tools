@@ -16,6 +16,8 @@ RUN mvn install
 
 CMD ["java", "-jar", "/java-maven-helloworld/target/java-maven-helloworld-1.0-SNAPSHOT.jar"]
 
+CMD ["java", "-cp", "/java-maven-helloworld/target/java-maven-helloworld-1.0-SNAPSHOT.jar", "HelloWorld"]
+
 # docker build -t java-maven-ubuntu.image:1.0 .
 # docker run java-maven-ubuntu.image:1.0
 
