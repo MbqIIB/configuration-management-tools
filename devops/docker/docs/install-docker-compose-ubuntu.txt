@@ -1,0 +1,29 @@
+wget -qO- https://get.docker.com/ | sh
+
+sudo usermod -aG docker $(whoami)
+
+sudo apt-get -y install python-pip
+
+sudo pip install docker-compose
+
+mkdir hello-world
+
+cd hello-world
+
+nano docker-compose.yml
+
+my-test:
+  image: hello-world
+  
+docker-compose up
+
+docker-compose up -d
+
+docker-compose ps
+
+docker-compose stop
+
+docker-compose rm 
+
+
+
