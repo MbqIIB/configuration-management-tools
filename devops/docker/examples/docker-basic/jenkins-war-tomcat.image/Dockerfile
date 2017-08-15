@@ -14,7 +14,7 @@ CMD ["catalina.sh", "run"]
 $ docker pull jenkins
 $ docker images
 
-$ docker run --detach --publish=49001:8080 --volume=/home/hariharan/work/jenkins_home:/var/jenkins_home --tty --name="my_jenkins_1" jenkins
+$ docker run --detach --publish=49001:8080 --volume=/home/ubuntu/work/jenkins_home:/var/jenkins_home --tty --name="my_jenkins_1" jenkins
 $ docker ps
 
 $ docker logs my_jenkins_1
