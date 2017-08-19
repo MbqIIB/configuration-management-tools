@@ -27,3 +27,5 @@ services:
 
 # docker service logs
 # docker service logs sf-boot-scale
+
+# https://blog.couchbase.com/deploy-docker-compose-services-swarm/
