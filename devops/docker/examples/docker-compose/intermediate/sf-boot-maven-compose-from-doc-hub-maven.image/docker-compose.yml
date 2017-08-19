@@ -1,0 +1,7 @@
+version: '2'
+services:
+  sf-boot-scale:
+    image: santosh32/sf-boot-maven-git-ubuntu.image
+    container_name: sf-boot-scale
+    ports:
+    - 8080:8080
