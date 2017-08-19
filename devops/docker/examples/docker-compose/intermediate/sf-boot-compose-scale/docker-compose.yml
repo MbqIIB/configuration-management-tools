@@ -1,7 +1,23 @@
-version: '2'
+#version: '2'
+version: '3'
 services:
   sf-boot-scale:
     image: santosh32/sf-boot-maven-git-ubuntu.image
     container_name: sf-boot-scale
     ports:
     - 8080:8080
+    
+# docker-compose up
+# docker-compose scale sf-boot-scale=3
+
+# docker-compose up
+# docker-compose scale sf-boot-scale=3
+
+# docker swarm init
+# docker stack deploy --compose-file=docker-compose.yml sf-boot-scale
+
+# docker service ls
+# docker service ps
+
+# docker service logs
+# docker service logs sf-boot-scale
