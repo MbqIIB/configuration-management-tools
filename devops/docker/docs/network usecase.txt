@@ -1,0 +1,91 @@
+apt-get update && apt-get install -y iputils-ping
+-------------------------------------------------
+
+docker network ls
+
+docker network inspect bridge
+docker run -itd --name=defaultnw_ubuntu.1 ubuntu
+docker run -itd --name=defaultnw_ubuntu.2 ubuntu
+docker network inspect bridge
+
+docker inspect --format='{{json .NetworkSettings.Networks}}' defaultnw_ubuntu.1
+docker inspect --format='{{json .NetworkSettings.Networks}}' defaultnw_ubuntu.2
+
+docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' defaultnw_ubuntu.1
+docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' defaultnw_ubuntu.2
+
+docker exec -it defaultnw_ubuntu.1 bash
+ping 172.17.0.2 <<defaultnw_ubuntu.2 ip>>
+ping <<defaultnw_ubuntu.2 name>>
+cat /etc/hosts
+
+docker exec -it defaultnw_ubuntu.2 bash
+ping 172.17.0.2 <<defaultnw_ubuntu.1 ip>>
+ping <<defaultnw_ubuntu.1 name>>
+cat /etc/hosts 
+
+if two docker containers are in same default/bridge network they communicated via ip address but not with container names 
+----------------------------------------------------------------------------------------------------------
+
+docker network create -d bridge customnw
+docker network ls
+
+docker network inspect customnw
+docker run -itd --net=customnw --name customnw_ubuntu.3 ubuntu
+docker run -itd --net=customnw --name customnw_ubuntu.4 ubuntu
+docker network inspect customnw
+
+docker inspect --format='{{json .NetworkSettings.Networks}}' customnw_ubuntu.4
+docker inspect --format='{{json .NetworkSettings.Networks}}' customnw_ubuntu.3
+
+docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' customnw_ubuntu.3
+docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' customnw_ubuntu.4
+
+docker exec -it customnw_ubuntu.3 bash
+ping 172.17.0.2 <<customnw_ubuntu.4 ip>>
+ping <<customnw_ubuntu.4 name>>
+cat /etc/hosts 
+
+docker exec -it customnw_ubuntu.4 bash
+ping 172.17.0.2 <<customnw_ubuntu.3 ip>>
+ping <<customnw_ubuntu.3 name>>
+cat /etc/hosts 
+
+if two docker containers are in same custom network they communicated with both ip address and container names.
+------------------------------------------------------------------------------------------------------------
+
+docker exec -it defaultnw_ubuntu.1 bash
+ping 172.17.0.2 <<customnw_ubuntu.3 ip>>
+ping <<customnw_ubuntu.3 name>>
+cat /etc/hosts
+
+docker exec -it customnw_ubuntu.3 bash
+ping 172.17.0.2 <<defaultnw_ubuntu.1 ip>>
+ping <<defaultnw_ubuntu.1 name>>
+cat /etc/hosts
+
+docker network connect customnw defaultnw_ubuntu.1
+
+docker exec -it defaultnw_ubuntu.1 bash
+ping 172.17.0.2 <<customnw_ubuntu.3 ip>>
+ping <<customnw_ubuntu.3 name>>
+cat /etc/hosts
+
+docker exec -it customnw_ubuntu.3 bash
+ping 172.17.0.2 <<defaultnw_ubuntu.1 ip>>
+ping <<defaultnw_ubuntu.1 name>>
+cat /etc/hosts
+
+docker exec -it defaultnw_ubuntu.1 bash
+ping 172.17.0.2 <<customnw_ubuntu.4 ip>>
+ping <<customnw_ubuntu.4 name>>
+cat /etc/hosts
+
+docker exec -it customnw_ubuntu.4 bash
+ping 172.17.0.2 <<defaultnw_ubuntu.1 ip>>
+ping <<defaultnw_ubuntu.1 name>>
+cat /etc/hosts
+
+--------------------------------------------------------------------------------------------------
+docker network disconnect bridge defaultnw_ubuntu.1
+docker network connect customnw defaultnw_ubuntu.1
