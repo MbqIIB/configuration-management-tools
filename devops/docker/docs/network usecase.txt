@@ -25,6 +25,36 @@ ping <<defaultnw_ubuntu.1 name>>
 cat /etc/hosts 
 
 if two docker containers are in same default/bridge network they communicated via ip address but not with container names 
+
+it is possible with link lets try that, but still two way communication is not possible
+---------------------------------------------------------------------------------------
+docker run -itd --name=defaultnw_busybox.1 busybox
+docker run -itd --name=defaultnw_busybox.2 busybox
+docker network inspect bridge
+
+docker inspect --format='{{json .NetworkSettings.Networks}}' defaultnw_busybox.1
+docker inspect --format='{{json .NetworkSettings.Networks}}' defaultnw_busybox.2
+
+docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' defaultnw_busybox.1
+docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' defaultnw_busybox.2
+
+docker exec -it defaultnw_busybox.1 bash => will not work use attach
+docker attach defaultnw_busybox.1
+ping 172.17.0.2 <<defaultnw_busybox.2 ip>>
+ping <<defaultnw_busybox.2 name>>
+cat /etc/hosts
+
+docker exec -it defaultnw_busybox.2 bash
+docker attach defaultnw_busybox.2
+ping 172.17.0.2 <<defaultnw_busybox.1 ip>>
+ping <<defaultnw_busybox.1 name>>
+cat /etc/hosts 
+
+docker run -itd --name=defaultnw_busybox.1 busybox
+docker run -itd --name=defaultnw_busybox.3 --link defaultnw_busybox.1:b1 busybox
+docker attach defaultnw_busybox.3
+ping 172.17.0.2 <<defaultnw_busybox.1 ip>>
+ping <<defaultnw_busybox.1 name>>
 ----------------------------------------------------------------------------------------------------------
 
 docker network create -d bridge customnw

@@ -1,0 +1,19 @@
+docker-machine create -d virtualbox host1-consul
+
+docker $(docker-machine config host1-consul) run -d -p "8500:8500" -h "consul" progrium/consul -server -bootstrap
+docker $(docker-machine config host1-consul) ps
+
+docker-machine create -d virtualbox  --engine-opt="cluster-store=consul://$(docker-machine ip host1-consul):8500" --engine-opt="cluster-advertise=eth1:0" host2
+docker-machine create -d virtualbox  --engine-opt="cluster-store=consul://$(docker-machine ip host1-consul):8500" --engine-opt="cluster-advertise=eth1:0" host3
+
+docker $(docker-machine config host2) network create -d overlay myapp
+
+docker $(docker-machine config host2) network ls
+docker $(docker-machine config host3) network ls
+
+docker $(docker-machine config host2) run -itd --name=webfront --net=myapp nginx
+
+docker $(docker-machine config host2) ps
+ 
+docker $(docker-machine config host3) run -it --rm --net=myapp busybox wget -qO- http://webfront
+
