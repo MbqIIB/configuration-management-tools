@@ -15,8 +15,8 @@ Eventhough containers are removed the volumes are still available, those volumes
 untill and unless docker host machine is dies.
 ------------------------------------------------
 
-docker run -itd --name=defaultnw_busybox.1 -v  /home/ubuntu/my_data/:/data busybox
-docker run -itd --name=defaultnw_busybox.2 -v  /home/ubuntu/my_data/:/data busybox
+docker run -itd --name=defaultnw_busybox.1 -v /home/ubuntu/my_data/:/data busybox
+docker run -itd --name=defaultnw_busybox.2 -v /home/ubuntu/my_data/:/data busybox
 
 docker attach defaultnw_busybox.1
 docker attach defaultnw_busybox.2
