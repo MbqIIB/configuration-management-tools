@@ -10,8 +10,10 @@ docker attach defaultnw_busybox.2
 docker inspect defaultnw_busybox.1
 docker inspect defaultnw_busybox.2
 
+docker inspect -f "{{json .Mounts}}" defaultnw_busybox.1 | jq .
+
 > ls -l /var/lib/docker/volumes/
-Eventhough containers are removed the volumes are still available, those volumes are called dangling volumes.
+Eventhough containers are removed the volumes are still available, those volumes are called dangling or ghost volume.
 untill and unless docker host machine is dies.
 ------------------------------------------------
 
@@ -24,5 +26,13 @@ docker attach defaultnw_busybox.2
 docker inspect defaultnw_busybox.1
 docker inspect defaultnw_busybox.2
 
-volumes are available eventhough docker container or machines are died
+volumes are available eventhough docker container or docker hosts are died.
 ---------------------------------------------
+docker run -itd --name=defaultnw_busybox.1 -v /home/ubuntu/my_data/:/data busybox
+docker run -itd --name=defaultnw_busybox.2 --volumes-from defaultnw_busybox.1 busybox
+
+docker inspect -f "{{json .Mounts}}" defaultnw_busybox.1 | jq .
+docker inspect -f "{{json .Mounts}}" defaultnw_busybox.2 | jq .
+
+docker attach defaultnw_busybox.1
+docker attach defaultnw_busybox.2
